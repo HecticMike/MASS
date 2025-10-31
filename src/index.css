@@ -1,0 +1,124 @@
+:root {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --bg: #f7f7f9;
+  --fg: #1f1f2e;
+  --bg-elevated: #ffffff;
+  --bg-subtle: #f0f0f4;
+  --accent: #6c63ff;
+  --accent-muted: #928dff;
+  --border: rgba(31, 31, 46, 0.12);
+  --success: #2ecc71;
+  --danger: #ff6b6b;
+  --radius: 18px;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --shadow-soft: 0 20px 40px rgba(17, 17, 26, 0.08);
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1016;
+    --fg: #f5f6fa;
+    --bg-elevated: #181a24;
+    --bg-subtle: #1f2130;
+    --accent: #8c86ff;
+    --accent-muted: #726dfa;
+    --border: rgba(245, 246, 250, 0.08);
+    --shadow-soft: 0 16px 32px rgba(0, 0, 0, 0.35);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: none;
+}
+
+button:hover {
+  box-shadow: 0 12px 24px rgba(108, 99, 255, 0.22);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent-muted);
+  outline-offset: 2px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+@supports (padding: max(0px)) {
+  body {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+}

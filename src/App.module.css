@@ -1,0 +1,132 @@
+.appShell {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(108, 99, 255, 0.07) 0%, rgba(108, 99, 255, 0) 50%),
+    var(--bg);
+  color: var(--fg);
+}
+
+.layout {
+  margin: 0 auto;
+  min-height: 100vh;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  gap: var(--space-md);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-sm);
+  border-radius: calc(var(--radius) * 0.8);
+  background: var(--bg-elevated);
+  background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
+  box-shadow: 0 10px 30px rgba(17, 17, 26, 0.06);
+  position: sticky;
+  top: var(--space-sm);
+  z-index: 10;
+  backdrop-filter: blur(12px);
+}
+
+.brandGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.routeTitle {
+  font-size: clamp(1.1rem, 3vw, 1.35rem);
+  font-weight: 600;
+}
+
+.settingsLink {
+  font-size: 0.9rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: calc(var(--radius) * 0.6);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.settingsLink:hover {
+  background: var(--bg-subtle);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-subtle));
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding-bottom: calc(var(--space-lg) + 72px);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+}
+
+.nav {
+  position: sticky;
+  bottom: var(--space-sm);
+  margin-top: auto;
+  border-radius: calc(var(--radius) * 1.1);
+  padding: 0.35rem;
+  background: var(--bg-elevated);
+  background: color-mix(in srgb, var(--bg-elevated) 90%, transparent);
+  border: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem;
+  box-shadow: 0 18px 36px rgba(17, 17, 26, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.navLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.65rem 0.35rem;
+  border-radius: calc(var(--radius) * 0.9);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(31, 31, 46, 0.75);
+  background: transparent;
+  border: none;
+}
+
+.navLinkActive {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(108, 99, 255, 0.28);
+}
+
+@media (prefers-color-scheme: dark) {
+  .navLink {
+    color: rgba(245, 246, 250, 0.75);
+  }
+}
+
+.navLabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.navIcon {
+  font-size: 1.2rem;
+  line-height: 1;
+}

@@ -1,0 +1,127 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+.card {
+  background: var(--bg-elevated);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.fieldRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.radioGroup {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.radioButton {
+  padding: 0.45rem 0.75rem;
+  border-radius: calc(var(--radius) * 0.6);
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.radioActive {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+}
+
+.inlineInputs {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.buttonSecondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: inherit;
+}
+
+.buttonSecondary:hover {
+  background: var(--bg-subtle);
+}
+
+.toggleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.toggleRow:last-of-type {
+  border-bottom: none;
+}
+
+.toggleActions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.info {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.danger {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.danger:hover {
+  background: rgba(255, 107, 107, 0.12);
+}
+
+.metadata {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}

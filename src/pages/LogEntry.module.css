@@ -1,0 +1,110 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+.card {
+  background: var(--bg-elevated);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.summaryRow {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.heading {
+  margin: 0;
+  font-size: clamp(1.3rem, 5vw, 1.6rem);
+  font-weight: 700;
+}
+
+.moment {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.datetime {
+  font-size: 0.95rem;
+}
+
+.feedback {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.history {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.historyList {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.historyItem {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.85rem 1rem;
+  border-radius: calc(var(--radius) * 0.8);
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+
+.historyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.historyPrimary {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.historySecondary {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.emptyState {
+  border: 1px dashed var(--border);
+  border-radius: calc(var(--radius) * 0.9);
+  padding: var(--space-md);
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}

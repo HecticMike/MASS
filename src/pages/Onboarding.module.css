@@ -1,0 +1,120 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+.intro {
+  background: var(--bg-elevated);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.introTitle {
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+  font-weight: 700;
+  margin: 0;
+}
+
+.introCopy {
+  margin: 0;
+  color: rgba(31, 31, 46, 0.72);
+  font-size: 0.95rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .introCopy {
+    color: rgba(245, 246, 250, 0.7);
+  }
+}
+
+.form {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.optionGroup {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.optionButton {
+  flex: 1;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.optionButtonActive {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 12px 24px rgba(108, 99, 255, 0.28);
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.hint {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.heightToggle {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.heightInputs {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.imperialInputs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
+}
+
+.note {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.secondary {
+  background: transparent;
+  color: inherit;
+  border: 1px dashed var(--border);
+}
+
+.secondary:hover {
+  background: var(--bg-subtle);
+}
