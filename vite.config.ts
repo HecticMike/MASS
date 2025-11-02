@@ -11,7 +11,7 @@ export default defineConfig(({ command }) => {
     typeof envBase === 'string' && envBase.trim().length > 0
       ? withTrailingSlash(envBase.trim())
       : command === 'build'
-        ? '/mass/'
+        ? '/MASS/'
         : '/'
 
   return {
