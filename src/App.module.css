@@ -1,17 +1,16 @@
 .appShell {
   min-height: 100vh;
-  background: linear-gradient(180deg, rgba(108, 99, 255, 0.07) 0%, rgba(108, 99, 255, 0) 50%),
-    var(--bg);
   color: var(--fg);
+  background: linear-gradient(180deg, rgba(0, 134, 255, 0.04), transparent);
 }
 
 .layout {
   margin: 0 auto;
   min-height: 100vh;
-  max-width: 540px;
+  max-width: 760px;
   display: flex;
   flex-direction: column;
-  padding: var(--space-md);
+  padding: var(--space-lg) var(--space-md) calc(var(--space-lg) + 84px);
   gap: var(--space-md);
 }
 
@@ -19,15 +18,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-sm) var(--space-sm);
-  border-radius: calc(var(--radius) * 0.8);
-  background: var(--bg-elevated);
-  background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
-  box-shadow: 0 10px 30px rgba(17, 17, 26, 0.06);
+  padding: 1.1rem 1.4rem;
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  border-top: 4px solid var(--accent-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   position: sticky;
-  top: var(--space-sm);
+  top: var(--space-md);
   z-index: 10;
-  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-soft);
 }
 
 .brandGroup {
@@ -37,31 +37,26 @@
 }
 
 .brand {
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 600;
   font-size: 0.75rem;
-  text-transform: uppercase;
-  opacity: 0.75;
 }
 
 .routeTitle {
-  font-size: clamp(1.1rem, 3vw, 1.35rem);
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
   font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .settingsLink {
-  font-size: 0.9rem;
-  padding: 0.45rem 0.75rem;
-  border-radius: calc(var(--radius) * 0.6);
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  padding: 0.55rem 1.2rem;
+  background: var(--surface-muted);
+  border: 1px solid var(--border-strong);
   font-weight: 600;
-  transition: background 0.2s ease;
-}
-
-.settingsLink:hover {
-  background: var(--bg-subtle);
-  background: color-mix(in srgb, var(--accent) 12%, var(--bg-subtle));
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg);
 }
 
 .main {
@@ -69,7 +64,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  padding-bottom: calc(var(--space-lg) + 72px);
 }
 
 .content {
@@ -78,55 +72,34 @@
 }
 
 .nav {
-  position: sticky;
-  bottom: var(--space-sm);
-  margin-top: auto;
-  border-radius: calc(var(--radius) * 1.1);
-  padding: 0.35rem;
-  background: var(--bg-elevated);
-  background: color-mix(in srgb, var(--bg-elevated) 90%, transparent);
-  border: 1px solid var(--border);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--surface);
+  border-top: 2px solid var(--accent);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.35rem;
-  box-shadow: 0 18px 36px rgba(17, 17, 26, 0.08);
-  backdrop-filter: blur(12px);
+  gap: 0;
+  box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.08);
 }
 
 .navLink {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.2rem;
-  padding: 0.65rem 0.35rem;
-  border-radius: calc(var(--radius) * 0.9);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: rgba(31, 31, 46, 0.75);
-  background: transparent;
+  padding: 0.85rem 0.5rem;
   border: none;
+  background: transparent;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
 }
 
 .navLinkActive {
-  background: var(--accent);
-  color: #fff;
-  box-shadow: 0 12px 30px rgba(108, 99, 255, 0.28);
-}
-
-@media (prefers-color-scheme: dark) {
-  .navLink {
-    color: rgba(245, 246, 250, 0.75);
-  }
+  background: linear-gradient(120deg, rgba(0, 134, 255, 0.12), rgba(55, 195, 141, 0.12));
+  color: var(--fg);
 }
 
 .navLabel {
   font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
-.navIcon {
-  font-size: 1.2rem;
-  line-height: 1;
-}

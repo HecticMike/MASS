@@ -1,40 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 :root {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Space Grotesk', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --bg: #f7f7f9;
-  --fg: #1f1f2e;
-  --bg-elevated: #ffffff;
-  --bg-subtle: #f0f0f4;
-  --accent: #6c63ff;
-  --accent-muted: #928dff;
-  --border: rgba(31, 31, 46, 0.12);
-  --success: #2ecc71;
-  --danger: #ff6b6b;
-  --radius: 18px;
-  --space-xs: 0.5rem;
-  --space-sm: 0.75rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --shadow-soft: 0 20px 40px rgba(17, 17, 26, 0.08);
+  --bg: #f4f8fb;
+  --fg: #0c1829;
+  --ink-muted: rgba(12, 24, 41, 0.65);
+  --surface: #ffffff;
+  --surface-muted: #eef6ff;
+  --surface-contrast: #dbeffb;
+  --accent: #0086ff;
+  --accent-soft: #7ac8ff;
+  --accent-secondary: #ffd34d;
+  --accent-tertiary: #37c38d;
+  --border: rgba(12, 24, 41, 0.14);
+  --border-strong: rgba(12, 24, 41, 0.32);
+  --success: #2aa67c;
+  --danger: #e54848;
+  --radius: 0;
+  --space-xs: 0.35rem;
+  --space-sm: 0.85rem;
+  --space-md: 1.4rem;
+  --space-lg: 2.4rem;
+  --shadow-soft: 0 45px 80px rgba(12, 24, 41, 0.11);
   background-color: var(--bg);
   color: var(--fg);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1016;
-    --fg: #f5f6fa;
-    --bg-elevated: #181a24;
-    --bg-subtle: #1f2130;
-    --accent: #8c86ff;
-    --accent-muted: #726dfa;
-    --border: rgba(245, 246, 250, 0.08);
-    --shadow-soft: 0 16px 32px rgba(0, 0, 0, 0.35);
+    --bg: #030a12;
+    --fg: #f1f6fb;
+    --ink-muted: rgba(241, 246, 251, 0.72);
+    --surface: #0f1a25;
+    --surface-muted: #172331;
+    --surface-contrast: #1f3245;
+    --accent: #53b5ff;
+    --accent-soft: #a8daff;
+    --accent-secondary: #ffd452;
+    --accent-tertiary: #4fd8a0;
+    --border: rgba(241, 246, 251, 0.2);
+    --border-strong: rgba(241, 246, 251, 0.38);
+    --shadow-soft: 0 45px 80px rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -47,8 +59,21 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--fg);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(0, 134, 255, 0.15) 1px, transparent 0),
+    radial-gradient(circle at 12px 12px, rgba(55, 195, 141, 0.15) 1px, transparent 0);
+  background-size: 32px 32px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: -1;
 }
 
 #root {
@@ -70,26 +95,29 @@ select {
 
 button {
   border: none;
-  border-radius: var(--radius);
-  background: var(--accent);
+  border-radius: 0;
+  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-tertiary) 100%);
   color: #fff;
-  padding: 0.75rem 1rem;
+  padding: 0.9rem 1.35rem;
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 20px 35px rgba(0, 134, 255, 0.25);
 }
 
 button:hover {
-  box-shadow: 0 12px 24px rgba(108, 99, 255, 0.22);
+  transform: translateY(-1px);
 }
 
 button:active {
-  transform: scale(0.98);
+  transform: translateY(0);
+  box-shadow: 0 10px 20px rgba(0, 134, 255, 0.3);
 }
 
 button:focus-visible {
-  outline: 2px solid var(--accent-muted);
+  outline: 2px solid var(--accent-secondary);
   outline-offset: 2px;
 }
 
@@ -98,9 +126,9 @@ textarea,
 select {
   width: 100%;
   padding: 0.85rem 1rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--bg-elevated);
+  border-radius: 0;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -108,7 +136,7 @@ input:focus,
 textarea:focus,
 select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(0, 134, 255, 0.18);
   outline: none;
 }
 
@@ -122,3 +150,4 @@ textarea {
     padding-bottom: max(env(safe-area-inset-bottom), 0px);
   }
 }
+

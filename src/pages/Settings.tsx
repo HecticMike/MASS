@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useMass } from '../context/MassContext'
 import styles from './Settings.module.css'
-import { syncToDriveJson, syncToGoogleSheets } from '../services/sync'
 import { useProfileGuard } from '../hooks/useProfileGuard'
 
 type ProfileFormState = {
@@ -25,8 +24,13 @@ const Settings = () => {
   const [profileError, setProfileError] = useState<string | null>(null)
   const [goalValue, setGoalValue] = useState('')
   const [goalError, setGoalError] = useState<string | null>(null)
-  const [sheetsEnabled, setSheetsEnabled] = useState(false)
-  const [driveEnabled, setDriveEnabled] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<'miguel' | 'ines'>('miguel')
+  const [includeSections, setIncludeSections] = useState({
+    profile: true,
+    goal: true,
+    entries: true,
+  })
+  const [backupMessage, setBackupMessage] = useState<string | null>(null)
 
   useEffect(() => {
     if (profile) {
@@ -116,29 +120,36 @@ const Settings = () => {
   }
 
   const handleBackupJson = () => {
-    const state = {
-      profile,
-      goal,
-      entries,
+    if (!includeSections.profile && !includeSections.goal && !includeSections.entries) {
+      setBackupMessage('Select at least one section to include in the backup.')
+      return
     }
-    const stamp = new Date().toISOString().slice(0, 10)
-    downloadFile(
-      JSON.stringify(state, null, 2),
-      `app-state-${stamp}.json`,
-      'application/json',
-    )
+
+    const payload: Record<string, unknown> = {
+      user: selectedUser,
+      generatedAt: new Date().toISOString(),
+    }
+
+    if (includeSections.profile) {
+      payload.profile = profile
+    }
+    if (includeSections.goal) {
+      payload.goal = goal
+    }
+    if (includeSections.entries) {
+      payload.entries = entries
+    }
+
+    const fileName = selectedUser === 'miguel' ? 'mass-miguel.json' : 'mass-ines.json'
+    downloadFile(JSON.stringify(payload, null, 2), fileName, 'application/json')
+    setBackupMessage(`Backup downloaded as ${fileName}.`)
   }
 
-  const handleSheetsToggle = () => {
-    const next = !sheetsEnabled
-    setSheetsEnabled(next)
-    void syncToGoogleSheets(entries)
-  }
-
-  const handleDriveToggle = () => {
-    const next = !driveEnabled
-    setDriveEnabled(next)
-    void syncToDriveJson({ profile, goal, entries })
+  const handleSectionToggle = (section: keyof typeof includeSections) => {
+    setIncludeSections((current) => ({
+      ...current,
+      [section]: !current[section],
+    }))
   }
 
   const entryCount = entries.length
@@ -246,36 +257,73 @@ const Settings = () => {
         <p className={styles.info}>
           MASS stores everything locally. Export or back up whenever you like.
         </p>
+
+        <div className={styles.field}>
+          <span className={styles.label}>Backup for</span>
+          <div className={styles.radioGroup}>
+            <button
+              type="button"
+              className={`${styles.radioButton} ${selectedUser === 'miguel' ? styles.radioActive : ''}`}
+              onClick={() => setSelectedUser('miguel')}
+            >
+              Miguel
+            </button>
+            <button
+              type="button"
+              className={`${styles.radioButton} ${selectedUser === 'ines' ? styles.radioActive : ''}`}
+              onClick={() => setSelectedUser('ines')}
+            >
+              Ines
+            </button>
+          </div>
+          <p className={styles.info}>
+            File: {selectedUser === 'miguel' ? 'mass-miguel.json' : 'mass-ines.json'}
+          </p>
+        </div>
+
+        <div className={styles.field}>
+          <span className={styles.label}>Include sections</span>
+          <div className={styles.checkboxGroup}>
+            <label className={styles.checkbox}>
+              <input
+                type="checkbox"
+                checked={includeSections.profile}
+                onChange={() => handleSectionToggle('profile')}
+              />
+              <span>Profile</span>
+            </label>
+            <label className={styles.checkbox}>
+              <input
+                type="checkbox"
+                checked={includeSections.goal}
+                onChange={() => handleSectionToggle('goal')}
+              />
+              <span>Goal</span>
+            </label>
+            <label className={styles.checkbox}>
+              <input
+                type="checkbox"
+                checked={includeSections.entries}
+                onChange={() => handleSectionToggle('entries')}
+              />
+              <span>Entries</span>
+            </label>
+          </div>
+        </div>
+
         <div className={styles.controls}>
           <button type="button" onClick={handleExportCsv} disabled={entryCount === 0}>
             Export CSV
           </button>
           <button type="button" className={styles.buttonSecondary} onClick={handleBackupJson}>
-            Backup JSON
+            Download backup
           </button>
-        </div>
-
-        <div className={styles.toggleRow}>
-          <span>Sync with Google Sheets</span>
-          <div className={styles.toggleActions}>
-            <button type="button" className={styles.buttonSecondary} onClick={handleSheetsToggle}>
-              {sheetsEnabled ? 'Disable' : 'Trigger'}
-            </button>
-          </div>
-        </div>
-
-        <div className={styles.toggleRow}>
-          <span>Sync with Drive JSON</span>
-          <div className={styles.toggleActions}>
-            <button type="button" className={styles.buttonSecondary} onClick={handleDriveToggle}>
-              {driveEnabled ? 'Disable' : 'Trigger'}
-            </button>
-          </div>
         </div>
 
         <p className={styles.info}>
           <strong>{entryCount}</strong> log(s) stored on this device.
         </p>
+        {backupMessage ? <p className={styles.info}>{backupMessage}</p> : null}
 
         <button
           type="button"

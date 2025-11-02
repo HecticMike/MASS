@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+﻿import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { format, formatTime } from '../utils/date'
 import { useMass } from '../context/MassContext'
 import { formatWeight, roundTo } from '../utils/weight'
-import { syncToGoogleSheets } from '../services/sync'
 import Toast from '../components/Toast'
 import styles from './LogEntry.module.css'
 import { useProfileGuard } from '../hooks/useProfileGuard'
@@ -102,7 +101,6 @@ const LogEntry = () => {
     setWeight('')
     setNote('')
     setDateTime(getNowInputValue())
-    void syncToGoogleSheets([entry])
   }
 
   return (

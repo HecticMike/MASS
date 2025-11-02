@@ -1,13 +1,14 @@
 .container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: var(--space-lg);
   width: 100%;
 }
 
 .card {
-  background: var(--bg-elevated);
-  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(0, 134, 255, 0.04), rgba(255, 211, 77, 0.06)),
+    var(--surface);
+  border: 1.5px solid var(--border-strong);
+  border-top: 3px solid var(--accent-tertiary);
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -24,29 +25,23 @@
   gap: 0.4rem;
 }
 
-.fieldRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .radioGroup {
   display: flex;
-  gap: var(--space-sm);
+  flex-wrap: wrap;
+  gap: var(--space-xs);
 }
 
 .radioButton {
-  padding: 0.45rem 0.75rem;
-  border-radius: calc(var(--radius) * 0.6);
-  border: 1px solid var(--border);
-  background: var(--bg-subtle);
+  padding: 0.55rem 0.95rem;
+  border: 1.5px solid rgba(0, 134, 255, 0.25);
+  background: var(--surface-muted);
   font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .radioActive {
-  background: var(--accent);
+  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-tertiary) 100%);
   color: #fff;
   border-color: transparent;
 }
@@ -64,35 +59,38 @@
 
 .buttonSecondary {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(255, 211, 77, 0.7);
   color: inherit;
 }
 
 .buttonSecondary:hover {
-  background: var(--bg-subtle);
+  background: rgba(255, 211, 77, 0.15);
 }
 
-.toggleRow {
+.checkboxGroup {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.checkbox {
+  display: inline-flex;
   align-items: center;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.toggleRow:last-of-type {
-  border-bottom: none;
-}
-
-.toggleActions {
-  display: flex;
-  gap: var(--space-sm);
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--surface-muted);
+  border: 1px solid rgba(0, 134, 255, 0.2);
+  padding: 0.35rem 0.6rem;
 }
 
 .sectionTitle {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .row {
@@ -103,25 +101,30 @@
 
 .label {
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
 .info {
-  font-size: 0.9rem;
-  opacity: 0.75;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
 }
 
 .danger {
   background: transparent;
-  border: 1px solid var(--danger);
+  border: 1.5px solid var(--danger);
   color: var(--danger);
+  text-transform: uppercase;
 }
 
 .danger:hover {
-  background: rgba(255, 107, 107, 0.12);
+  background: rgba(180, 35, 24, 0.08);
 }
 
 .metadata {
   display: grid;
   gap: 0.35rem;
   font-size: 0.9rem;
+  color: var(--ink-muted);
 }

@@ -1,7 +1,7 @@
 .pill {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) * 0.85);
+  background: linear-gradient(180deg, rgba(0, 134, 255, 0.08), rgba(255, 211, 77, 0.08)),
+    var(--surface);
+  border: 1.5px solid rgba(0, 134, 255, 0.25);
   padding: var(--space-md);
   display: grid;
   gap: var(--space-sm);
@@ -15,30 +15,29 @@
 }
 
 .label {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  opacity: 0.7;
+  color: var(--ink-muted);
   margin-right: auto;
 }
 
 .value {
   font-weight: 700;
-  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  font-size: clamp(1.8rem, 6vw, 2.4rem);
 }
 
 .category {
   font-weight: 600;
   font-size: 0.95rem;
+  color: var(--accent-tertiary);
 }
 
 .scale {
   position: relative;
   display: flex;
-  height: 0.65rem;
-  border-radius: 999px;
-  overflow: hidden;
-  background: var(--bg-subtle);
+  height: 0.4rem;
+  background: var(--surface-muted);
 }
 
 .segment {
@@ -46,51 +45,32 @@
 }
 
 .segmentUnder {
-  background: linear-gradient(90deg, rgba(120, 180, 255, 0.65), rgba(120, 180, 255, 0.4));
+  background: #8ac6ff;
 }
 
 .segmentHealthy {
-  background: linear-gradient(90deg, rgba(78, 205, 196, 0.7), rgba(78, 205, 196, 0.55));
+  background: #8be0c0;
 }
 
 .segmentOver {
-  background: linear-gradient(90deg, rgba(255, 193, 7, 0.7), rgba(255, 193, 7, 0.5));
+  background: #ffe08a;
 }
 
 .segmentObese {
-  background: linear-gradient(90deg, rgba(255, 107, 107, 0.75), rgba(255, 107, 107, 0.55));
+  background: #ff9ca5;
 }
 
 .marker {
   position: absolute;
   top: -0.35rem;
-  width: 0.35rem;
-  height: 1.35rem;
-  border-radius: 999px;
-  background: var(--accent);
-  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.32);
+  width: 2px;
+  height: 1.2rem;
+  background: var(--fg);
+  box-shadow: 0 6px 18px rgba(0, 134, 255, 0.4);
   transform: translateX(-50%);
 }
 
 .rangeText {
   font-size: 0.85rem;
-  opacity: 0.7;
-}
-
-@media (prefers-color-scheme: dark) {
-  .segmentUnder {
-    background: linear-gradient(90deg, rgba(120, 180, 255, 0.85), rgba(120, 180, 255, 0.6));
-  }
-
-  .segmentHealthy {
-    background: linear-gradient(90deg, rgba(78, 205, 196, 0.9), rgba(78, 205, 196, 0.65));
-  }
-
-  .segmentOver {
-    background: linear-gradient(90deg, rgba(255, 193, 7, 0.9), rgba(255, 193, 7, 0.65));
-  }
-
-  .segmentObese {
-    background: linear-gradient(90deg, rgba(255, 107, 107, 0.9), rgba(255, 107, 107, 0.65));
-  }
+  color: var(--ink-muted);
 }

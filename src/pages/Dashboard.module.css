@@ -1,17 +1,15 @@
 .container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: var(--space-lg);
   width: 100%;
 }
 
 .hero {
-  background: linear-gradient(135deg, rgba(108, 99, 255, 0.18), rgba(108, 99, 255, 0.05));
-  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(0, 134, 255, 0.2), rgba(255, 211, 77, 0.25));
+  border: 1.5px solid rgba(0, 134, 255, 0.3);
   padding: var(--space-lg);
   display: grid;
   gap: var(--space-sm);
-  color: #fff;
   position: relative;
   overflow: hidden;
 }
@@ -20,8 +18,8 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(17, 17, 26, 0.35);
-  mix-blend-mode: multiply;
+  background-image: linear-gradient(120deg, transparent 45%, rgba(55, 195, 141, 0.25));
+  mix-blend-mode: screen;
 }
 
 .heroContent {
@@ -33,29 +31,32 @@
 
 .greeting {
   margin: 0;
-  font-size: clamp(1.45rem, 6vw, 1.9rem);
+  font-size: clamp(1.5rem, 6vw, 2rem);
   font-weight: 700;
+  text-transform: uppercase;
+  color: #052744;
 }
 
 .subtitle {
   margin: 0;
   font-size: 0.95rem;
-  opacity: 0.85;
+  color: rgba(5, 39, 68, 0.75);
 }
 
 .ctaLink {
   justify-self: start;
   margin-top: var(--space-sm);
-  padding: 0.55rem 0.95rem;
-  border-radius: calc(var(--radius) * 0.8);
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.55rem 1.2rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.2);
   font-weight: 600;
-  color: inherit;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #052744;
 }
 
 .ctaLink:hover {
-  background: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.32);
 }
 
 .cards {
@@ -64,8 +65,9 @@
 }
 
 .card {
-  background: var(--bg-elevated);
-  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-top: 3px solid var(--accent);
   padding: var(--space-md);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -85,7 +87,10 @@
 }
 
 .label {
-  opacity: 0.65;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
 }
 
 .value {
@@ -101,10 +106,9 @@
 }
 
 .placeholder {
-  border: 1px dashed var(--border);
-  border-radius: calc(var(--radius) * 0.9);
+  border: 1.5px dashed rgba(0, 134, 255, 0.4);
   padding: var(--space-md);
   text-align: center;
   font-size: 0.9rem;
-  opacity: 0.75;
+  color: var(--ink-muted);
 }

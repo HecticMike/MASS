@@ -32,9 +32,9 @@ type TooltipProps = {
 }
 
 const COLORS = {
-  entries: '#6c63ff',
-  trend: '#8c86ff',
-  asymptote: '#6c63ff',
+  entries: '#00a2ff',
+  trend: '#37c38d',
+  asymptote: '#ffd34d',
 }
 
 const MS_PER_DAY = 86_400_000
@@ -46,7 +46,14 @@ const TrendTooltip = ({ active, payload }: TooltipProps) => {
 
   const datum = payload[0]!.payload
   return (
-    <div style={{ background: 'var(--bg-elevated)', borderRadius: 12, padding: '0.5rem 0.75rem', border: '1px solid var(--border)', boxShadow: '0 12px 24px rgba(17,17,26,0.1)' }}>
+    <div
+      style={{
+        background: 'var(--surface)',
+        padding: '0.65rem 0.85rem',
+        border: '1.5px solid var(--border-strong)',
+        boxShadow: 'var(--shadow-soft)',
+      }}
+    >
       <div style={{ fontWeight: 600 }}>{format(datum.ts)}</div>
       <div style={{ fontSize: '0.9rem' }}>{datum.kg.toFixed(1)} kg</div>
       {datum.note ? <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>{datum.note}</div> : null}
