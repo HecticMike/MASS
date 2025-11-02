@@ -4,9 +4,11 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 
+const basename = import.meta.env.BASE_URL ?? '/'
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
   </StrictMode>,
@@ -14,8 +16,9 @@ createRoot(document.getElementById('root')!).render(
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
+    const swUrl = new URL('sw.js', window.location.origin + basename)
     navigator.serviceWorker
-      .register('/sw.js', { type: 'module' })
+      .register(swUrl.toString(), { type: 'module' })
       .catch((error) => {
         console.error('Service worker registration failed', error)
       })
