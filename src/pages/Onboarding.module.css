@@ -113,6 +113,12 @@
   padding-top: var(--space-sm);
 }
 
+.suggestion {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  margin: 0.2rem 0 0;
+}
+
 .actions {
   display: flex;
   flex-direction: column;

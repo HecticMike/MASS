@@ -4,6 +4,7 @@ export interface Profile {
   sex: Sex
   height_cm: number
   unit: 'kg' | 'lb'
+  dob?: string
 }
 
 export interface Goal {

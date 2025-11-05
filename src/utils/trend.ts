@@ -1,5 +1,7 @@
 type Point = { x: number; y: number }
 
+const MS_PER_DAY = 86_400_000
+
 const tricube = (t: number) => {
   const absT = Math.abs(t)
   if (absT >= 1) {
@@ -170,4 +172,157 @@ export const fitAsymptote = (
   }
 
   return best
+}
+
+type ExponentialFit = {
+  floor: number
+  intercept: number
+  k: number
+  baseTime: number
+  r2: number
+}
+
+const fitExponential = (entries: Array<{ ts: string; kg: number }>): ExponentialFit | null => {
+  const points = entries
+    .filter((entry) => entry && typeof entry.ts === 'string' && typeof entry.kg === 'number')
+    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime())
+  if (points.length < 4) {
+    return null
+  }
+
+  const baseTime = new Date(points[0]!.ts).getTime()
+  const xs = points.map((entry, index) => {
+    const time = new Date(entry.ts).getTime()
+    return (time - baseTime) / MS_PER_DAY + index * 1e-6
+  })
+  const ys = points.map((entry) => entry.kg)
+  const w0 = ys[0]!
+  const minY = Math.min(...ys)
+
+  const floors: number[] = []
+  const lower = minY - 2
+  const upper = minY - 0.3
+  if (upper <= lower) {
+    return null
+  }
+  const steps = 40
+  for (let i = 0; i <= steps; i += 1) {
+    floors.push(lower + ((upper - lower) * i) / steps)
+  }
+
+  const meanY = ys.reduce((acc, value) => acc + value, 0) / ys.length
+  const sst = ys.reduce((acc, value) => acc + (value - meanY) ** 2, 0) || 1
+
+  let best: ExponentialFit | null = null
+  let bestR2 = 0
+
+  for (const floor of floors) {
+    if (w0 <= floor + 0.2) {
+      continue
+    }
+    if (ys.some((value) => value <= floor + 0.05)) {
+      continue
+    }
+
+    const transformed: number[] = []
+    let valid = true
+    for (const y of ys) {
+      const diff = y - floor
+      if (diff <= 0) {
+        valid = false
+        break
+      }
+      transformed.push(Math.log(diff))
+    }
+    if (!valid) {
+      continue
+    }
+
+    const regression = linearRegression(xs, transformed)
+    if (!regression || regression.slope >= 0) {
+      continue
+    }
+    const k = -regression.slope
+    const predictions = xs.map((x) => floor + Math.exp(regression.intercept - k * x))
+    const sse = ys.reduce((acc, value, index) => acc + (value - predictions[index]!) ** 2, 0)
+    const r2 = 1 - sse / sst
+    if (r2 > bestR2 && Number.isFinite(r2)) {
+      bestR2 = r2
+      best = {
+        floor,
+        intercept: regression.intercept,
+        k,
+        baseTime,
+        r2,
+      }
+    }
+  }
+
+  if (!best || best.r2 < 0.55) {
+    return null
+  }
+
+  return best
+}
+
+export type WeeklyForecast = {
+  date: string
+  kg: number
+  dayOffset: number
+}
+
+export const forecastWeeklyWeights = (
+  entries: Array<{ ts: string; kg: number }>,
+  weeks = 4,
+): WeeklyForecast[] | null => {
+  const points = entries
+    .filter((entry) => entry && typeof entry.ts === 'string' && typeof entry.kg === 'number')
+    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime())
+  if (points.length < 2) {
+    return null
+  }
+  const latestKg = points[points.length - 1]!.kg
+
+  const clampPrediction = (value: number) => {
+    const min = latestKg - 2.5
+    const max = latestKg + 1.5
+    return Math.max(min, Math.min(max, value))
+  }
+  const fit = fitExponential(points)
+  if (fit) {
+    const lastTime = new Date(points[points.length - 1]!.ts).getTime()
+    const lastT = (lastTime - fit.baseTime) / MS_PER_DAY
+    const forecasts: WeeklyForecast[] = []
+    for (let week = 1; week <= weeks; week += 1) {
+      const dayOffset = week * 7
+      const t = lastT + dayOffset
+      const kg = clampPrediction(fit.floor + Math.exp(fit.intercept - fit.k * t))
+      const date = new Date(lastTime + dayOffset * MS_PER_DAY).toISOString()
+      forecasts.push({ date, kg, dayOffset })
+    }
+    return forecasts
+  }
+
+  const baseTime = new Date(points[0]!.ts).getTime()
+  const xs = points.map((entry, index) => {
+    const time = new Date(entry.ts).getTime()
+    return (time - baseTime) / MS_PER_DAY + index * 1e-6
+  })
+  const ys = points.map((entry) => entry.kg)
+  const regression = linearRegression(xs, ys)
+  if (!regression) {
+    return null
+  }
+  const limitedSlope = Math.max(-0.2, Math.min(0.2, regression.slope))
+  const lastTime = new Date(points[points.length - 1]!.ts).getTime()
+  const lastX = xs[xs.length - 1]!
+  const forecasts: WeeklyForecast[] = []
+  for (let week = 1; week <= weeks; week += 1) {
+    const dayOffset = week * 7
+    const futureX = lastX + dayOffset
+    const kg = clampPrediction(regression.intercept + limitedSlope * futureX)
+    const date = new Date(lastTime + dayOffset * MS_PER_DAY).toISOString()
+    forecasts.push({ date, kg, dayOffset })
+  }
+  return forecasts
 }

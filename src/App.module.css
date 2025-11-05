@@ -21,7 +21,7 @@
   padding: 1.1rem 1.4rem;
   background: var(--surface);
   border: 1.5px solid var(--border-strong);
-  border-top: 4px solid var(--accent-secondary);
+  border-top: 6px solid var(--accent-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   position: sticky;
@@ -36,9 +36,26 @@
   gap: 0.15rem;
 }
 
+.brandRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.brandMark {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: #fff;
+  padding: 2px;
+  box-shadow: 0 6px 14px rgba(8, 21, 36, 0.12);
+}
+
 .brand {
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 2.8rem;
+  letter-spacing: 0;
 }
 
 .routeTitle {

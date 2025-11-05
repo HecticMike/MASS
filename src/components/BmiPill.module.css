@@ -35,7 +35,7 @@
 .scale {
   position: relative;
   display: flex;
-  height: 0.4rem;
+  height: 1.35rem;
   background: var(--surface-muted);
 }
 
@@ -43,33 +43,56 @@
   flex-grow: 1;
 }
 
-.segmentUnder {
-  background: #8ac6ff;
-}
-
-.segmentHealthy {
-  background: #8be0c0;
-}
-
-.segmentOver {
-  background: #ffe08a;
-}
-
-.segmentObese {
-  background: #ff9ca5;
-}
-
 .marker {
   position: absolute;
-  top: -0.35rem;
-  width: 2px;
-  height: 1.2rem;
-  background: var(--fg);
-  box-shadow: 0 6px 18px rgba(15, 143, 255, 0.35);
+  top: -0.7rem;
+  width: 0;
+  height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 16px solid var(--fg);
   transform: translateX(-50%);
+  filter: drop-shadow(0 5px 8px rgba(8, 21, 36, 0.3));
 }
 
 .rangeText {
   font-size: 0.85rem;
   color: var(--fg);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: 0.75rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--fg);
+}
+
+.legendSwatch {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 2px;
+}
+
+.legendTextGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.legendText {
+  font-weight: 600;
+}
+
+.legendRange {
+  opacity: 0.7;
 }

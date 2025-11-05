@@ -65,6 +65,8 @@ const normalizeState = (input: unknown): AppState => {
           const rawSex = profileCandidate.sex
           const rawHeight = profileCandidate.height_cm ?? profileCandidate.heightCm
           const rawUnit = profileCandidate.unit ?? 'kg'
+          const rawDob =
+            typeof profileCandidate.dob === 'string' ? profileCandidate.dob : undefined
 
           const sex =
             rawSex === 'male' || rawSex === 'female' || rawSex === 'unspecified'
@@ -79,7 +81,12 @@ const normalizeState = (input: unknown): AppState => {
           const unit = rawUnit === 'kg' || rawUnit === 'lb' ? rawUnit : 'kg'
 
           if (height !== null && Number.isFinite(height)) {
-            return { sex, height_cm: Number(height), unit }
+            return {
+              sex,
+              height_cm: Number(height),
+              unit,
+              dob: rawDob,
+            }
           }
           return undefined
         })()

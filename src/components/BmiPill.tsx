@@ -1,68 +1,69 @@
+import type { Sex } from '../types/app'
+import {
+  BODY_FAT_TABLE,
+  bodyFatDomain,
+  bodyFatPercentage,
+  bodyFatSegments,
+  classifyBodyFat,
+  kgToBmi,
+} from '../utils/bmi'
+import { ageFromDob } from '../utils/bmi'
 import styles from './BmiPill.module.css'
 
-type BmiPillProps = {
+type BodyFatProps = {
   heightCm: number
   weightKg: number
+  sex?: Sex
+  dob?: string
 }
 
-const BMI_DOMAIN_MIN = 15
-const BMI_DOMAIN_MAX = 35
-
-const segments = [
-  { label: 'Underweight', start: 15, end: 18.5, className: styles.segmentUnder },
-  { label: 'Healthy', start: 18.5, end: 24.9, className: styles.segmentHealthy },
-  { label: 'Overweight', start: 24.9, end: 29.9, className: styles.segmentOver },
-  { label: 'Obese', start: 29.9, end: 35, className: styles.segmentObese },
-]
-
-const classify = (bmi: number) => {
-  if (bmi < 18.5) {
-    return { label: 'Underweight' }
-  }
-  if (bmi < 25) {
-    return { label: 'Healthy' }
-  }
-  if (bmi < 30) {
-    return { label: 'Overweight' }
-  }
-  return { label: 'Obese' }
-}
-
-const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max)
-
-const BmiPill = ({ heightCm, weightKg }: BmiPillProps) => {
+const BmiPill = ({ heightCm, weightKg, sex = 'male', dob }: BodyFatProps) => {
   if (!heightCm || !weightKg) {
     return null
   }
 
-  const heightM = heightCm / 100
-  const bmi = weightKg / (heightM * heightM)
-  const formattedBmi = bmi.toFixed(1)
-  const category = classify(bmi)
-  const healthyMin = (18.5 * heightM * heightM).toFixed(1)
-  const healthyMax = (24.9 * heightM * heightM).toFixed(1)
+  const bmi = kgToBmi(weightKg, heightCm)
+  const age = ageFromDob(dob)
 
-  const markerRatio =
-    (clamp(bmi, BMI_DOMAIN_MIN, BMI_DOMAIN_MAX) - BMI_DOMAIN_MIN) /
-    (BMI_DOMAIN_MAX - BMI_DOMAIN_MIN)
+  if (!age || age < 16) {
+    return (
+      <div className={styles.pill}>
+        <div className={styles.topRow}>
+          <span className={styles.label}>Body fat</span>
+          <span className={styles.value}>--%</span>
+        </div>
+        <p className={styles.rangeText}>
+          Add your birth date to estimate body fat and see tailored targets.
+        </p>
+      </div>
+    )
+  }
+
+  const percentage = bodyFatPercentage(bmi, age, sex)
+  const category = classifyBodyFat(percentage, sex)
+  const segments = bodyFatSegments(sex)
+  const domain = bodyFatDomain(sex)
+  const clamped = Math.min(Math.max(percentage, domain.min), domain.max)
+  const markerRatio = (clamped - domain.min) / (domain.max - domain.min)
 
   return (
     <div className={styles.pill}>
       <div className={styles.topRow}>
-        <span className={styles.label}>BMI</span>
-        <span className={styles.value}>{formattedBmi}</span>
-        <span className={styles.category}>{category.label}</span>
+        <span className={styles.label}>Body fat</span>
+        <span className={styles.value}>{percentage.toFixed(1)}%</span>
+        <span className={styles.category} style={{ color: category.color }}>
+          {category.label}
+        </span>
       </div>
 
-      <div className={styles.scale}>
+      <div className={styles.scale} aria-label="Body fat range">
         {segments.map((segment) => {
-          const width =
-            ((segment.end - segment.start) / (BMI_DOMAIN_MAX - BMI_DOMAIN_MIN)) * 100
+          const width = ((segment.end - segment.start) / (domain.max - domain.min)) * 100
           return (
             <div
-              key={segment.label}
-              className={`${styles.segment} ${segment.className}`}
-              style={{ width: `${width}%` }}
+              key={`${segment.label}-${segment.start}`}
+              className={styles.segment}
+              style={{ width: `${width}%`, background: segment.color }}
               aria-hidden="true"
             />
           )
@@ -71,13 +72,32 @@ const BmiPill = ({ heightCm, weightKg }: BmiPillProps) => {
           className={styles.marker}
           style={{ left: `${markerRatio * 100}%` }}
           role="img"
-          aria-label={`BMI ${formattedBmi} (${category.label})`}
+          aria-label={`Body fat ${percentage.toFixed(1)}% (${category.label})`}
         />
       </div>
 
       <p className={styles.rangeText}>
-        Healthy range for your height: {healthyMin}-{healthyMax} kg
+        Based on Deurenberg's formula ({age} yrs, {sex === 'male' ? 'male' : 'female'}).
       </p>
+
+      <ul className={styles.legend} aria-label="Body fat reference">
+        {BODY_FAT_TABLE.map((item) => {
+          const key = sex === 'female' ? 'female' : 'male'
+          const range = item[key]
+          const displayMax = range.max === Number.POSITIVE_INFINITY ? '∞' : range.max
+          return (
+            <li key={item.label} className={styles.legendItem}>
+              <span className={styles.legendSwatch} style={{ background: item.color }} />
+              <div className={styles.legendTextGroup}>
+                <span className={styles.legendText}>{item.label}</span>
+                <span className={styles.legendRange}>
+                  {sex === 'male' ? 'Men' : 'Women'} {range.min}–{displayMax}%
+                </span>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
     </div>
   )
 }

@@ -1,0 +1,70 @@
+import { BODY_FAT_TABLE, bodyFatPercentage, classifyBodyFat, kgToBmi } from '../utils/bmi'
+import { ageFromDob } from '../utils/bmi'
+import type { Sex } from '../types/app'
+import styles from './BmiPill.module.css'
+
+type BmiPillProps = {
+  heightCm: number
+  weightKg: number
+  sex?: Sex
+  dob?: string
+}
+
+const BmiPill = ({ heightCm, weightKg, sex = 'male', dob }: BmiPillProps) => {
+  if (!heightCm || !weightKg) {
+    return null
+  }
+
+  const bmi = kgToBmi(weightKg, heightCm)
+  const age = ageFromDob(dob)
+
+  if (!age || age < 16) {
+    return (
+      <div className={styles.pill}>
+        <div className={styles.topRow}>
+          <span className={styles.label}>Body fat</span>
+          <span className={styles.value}>--%</span>
+        </div>
+        <p className={styles.rangeText}>
+          Add your birth date to estimate body fat and see tailored targets.
+        </p>
+      </div>
+    )
+  }
+
+  const percentage = bodyFatPercentage(bmi, age, sex)
+  const category = classifyBodyFat(percentage, sex)
+
+  return (
+    <div className={styles.pill}>
+      <div className={styles.topRow}>
+        <span className={styles.label}>Body fat</span>
+        <span className={styles.value}>{percentage.toFixed(1)}%</span>
+        <span className={styles.category} style={{ color: category.color }}>
+          {category.label}
+        </span>
+      </div>
+
+      <p className={styles.rangeText}>
+        Based on Deurenberg’s formula ({age} yrs, {sex === 'male' ? 'male' : 'female'}).
+      </p>
+
+      <ul className={styles.legend} aria-label="Body fat reference">
+        {BODY_FAT_TABLE.map((item) => (
+          <li key={item.label} className={styles.legendItem}>
+            <span className={styles.legendSwatch} style={{ background: item.color }} />
+            <div className={styles.legendTextGroup}>
+              <span className={styles.legendText}>{item.label}</span>
+              <span className={styles.legendRange}>
+                Men {item.male.min}–{item.male.max === Number.POSITIVE_INFINITY ? '∞' : item.male.max}% · Women{' '}
+                {item.female.min}–{item.female.max === Number.POSITIVE_INFINITY ? '∞' : item.female.max}%
+              </span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+export default BmiPill

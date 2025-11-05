@@ -6,6 +6,7 @@ import { format } from '../utils/date'
 import { formatWeight, fromKg, roundTo } from '../utils/weight'
 import { summarizeProgress } from '../utils/progress'
 import { useProfileGuard } from '../hooks/useProfileGuard'
+import { forecastWeeklyWeights } from '../utils/trend'
 
 const formatChange = (delta: number | null, unit: 'kg' | 'lb') => {
   if (delta === null) {
@@ -36,11 +37,18 @@ const Dashboard = () => {
   const unit = profile.unit ?? 'kg'
   const summary = summarizeProgress(entries, goal)
   const hasData = summary.latestKg !== null
+  const resolvedSex = profile.sex === 'female' ? 'female' : 'male'
+  const weeklyForecasts = forecastWeeklyWeights(entries)
 
   return (
     <section className={styles.container}>
       {hasData ? (
-        <BmiPill heightCm={profile.height_cm} weightKg={summary.latestKg!} />
+        <BmiPill
+          heightCm={profile.height_cm}
+          weightKg={summary.latestKg!}
+          sex={resolvedSex}
+          dob={profile.dob}
+        />
       ) : null}
 
       {hasData ? (
@@ -89,6 +97,27 @@ const Dashboard = () => {
           Once you add a weight log, progress and trends will appear here.
         </div>
       )}
+
+      {weeklyForecasts && weeklyForecasts.length > 0 ? (
+        <article className={`${styles.card} ${styles.prediction}`}>
+          <div className={styles.predictionHeader}>
+            <span className={styles.label}>Next month outlook</span>
+            <span className={styles.predictionBadge}>Exponential</span>
+          </div>
+          <ul className={styles.predictionList}>
+            {weeklyForecasts.map((forecast, index) => (
+              <li key={forecast.date} className={styles.predictionRow}>
+                <span>Week {index + 1}</span>
+                <span>{format(forecast.date)}</span>
+                <span className={styles.predictionValue}>{formatWeight(forecast.kg, unit)}</span>
+              </li>
+            ))}
+          </ul>
+          <p className={styles.predictionCopy}>
+            Projection uses a slowing (exponential) trend, so losses taper as you near a plateau.
+          </p>
+        </article>
+      ) : null}
 
       <article className={styles.card}>
         <TrendsChart entries={entries} unit={unit} />

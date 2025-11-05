@@ -2,20 +2,25 @@ import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMass } from '../context/MassContext'
+import { ageFromDob, bmiToKg, targetBmiFor } from '../utils/bmi'
 import { roundTo } from '../utils/weight'
 import styles from './Onboarding.module.css'
 
 type HeightMode = 'cm' | 'imperial'
 
 type OnboardingFormState = {
-  sex: 'male' | 'female' | 'unspecified'
+  sex: 'male' | 'female'
   unit: 'kg' | 'lb'
   heightMode: HeightMode
   heightCm: string
   heightFt: string
   heightIn: string
   targetKg: string
+  dob: string
 }
+
+const resolveSex = (value?: 'male' | 'female' | 'unspecified'): 'male' | 'female' =>
+  value === 'female' ? 'female' : 'male'
 
 const parseNumber = (value: string) => {
   const parsed = Number.parseFloat(value.replace(',', '.'))
@@ -42,7 +47,7 @@ const buildInitialForm = (
     heightCmNumeric && heightCmNumeric > 0 ? cmToImperial(heightCmNumeric) : undefined
 
   return {
-    sex: params.sex ?? 'unspecified',
+    sex: resolveSex(params.sex),
     unit: params.unit ?? 'kg',
     heightMode: 'cm',
     heightCm: params.heightCm ?? (heightCmNumeric ? String(Math.round(heightCmNumeric)) : ''),
@@ -54,7 +59,21 @@ const buildInitialForm = (
         ? (conversion.inches > 0 ? conversion.inches.toFixed(1).replace(/\.0$/, '') : '0')
         : ''),
     targetKg: params.targetKg ?? '',
+    dob: params.dob ?? '',
   }
+}
+
+const resolveHeightCmFromForm = (state: OnboardingFormState): number | null => {
+  if (state.heightMode === 'cm') {
+    const cm = parseNumber(state.heightCm)
+    return Number.isFinite(cm) && cm > 0 ? cm : null
+  }
+  const feet = parseNumber(state.heightFt)
+  const inches = parseNumber(state.heightIn || '0')
+  if (!Number.isFinite(feet) || !Number.isFinite(inches)) {
+    return null
+  }
+  return imperialToCm(feet, inches)
 }
 
 const Onboarding = () => {
@@ -64,19 +83,50 @@ const Onboarding = () => {
   const derivedInitial = useMemo(() => {
     const target = goal?.targetKg
     return buildInitialForm({
-      sex: profile?.sex,
+      sex: resolveSex(profile?.sex),
       unit: profile?.unit,
       heightCmValue: profile?.height_cm,
       targetKg: typeof target === 'number' ? roundTo(target).toFixed(1) : '',
+      dob: profile?.dob,
     })
   }, [profile, goal])
 
   const [form, setForm] = useState<OnboardingFormState>(derivedInitial)
   const [error, setError] = useState<string | null>(null)
+  const [targetTouched, setTargetTouched] = useState<boolean>(Boolean(derivedInitial.targetKg))
+  const maxDob = useMemo(() => new Date().toISOString().slice(0, 10), [])
 
   useEffect(() => {
     setForm(derivedInitial)
+    setTargetTouched(Boolean(derivedInitial.targetKg))
   }, [derivedInitial])
+
+  const suggestedTarget = useMemo(() => {
+    const height = resolveHeightCmFromForm(form)
+    if (!height || height < 120) {
+      return null
+    }
+    const age = ageFromDob(form.dob)
+    if (!age || age < 16) {
+      return null
+    }
+    const targetBmi = targetBmiFor(form.sex, age)
+    const kgValue = roundTo(bmiToKg(targetBmi, height))
+    return {
+      kg: kgValue,
+      bmi: targetBmi,
+    }
+  }, [form.sex, form.dob, form.heightMode, form.heightCm, form.heightFt, form.heightIn])
+
+  useEffect(() => {
+    if (!suggestedTarget || targetTouched) {
+      return
+    }
+    setForm((current) => ({
+      ...current,
+      targetKg: suggestedTarget.kg.toFixed(1),
+    }))
+  }, [suggestedTarget, targetTouched])
 
   const handleHeightModeChange = (mode: HeightMode) => {
     setForm((current) => {
@@ -112,32 +162,16 @@ const Onboarding = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    let resolvedHeightCm: number | null = null
-    if (form.heightMode === 'cm') {
-      const cm = parseNumber(form.heightCm)
-      if (!Number.isFinite(cm) || cm < 120) {
-        setError('Please provide a height of at least 120 cm.')
-        return
-      }
-      resolvedHeightCm = Math.round(cm)
-    } else {
-      const feet = parseNumber(form.heightFt)
-      const inches = parseNumber(form.heightIn || '0')
-      if (!Number.isFinite(feet) || feet < 0) {
-        setError('Please add height feet and inches.')
-        return
-      }
-      const safeInches = Number.isFinite(inches) && inches >= 0 ? inches : 0
-      const cm = imperiallyBoundedHeight(feet, safeInches)
-      if (cm < 120) {
-        setError('Please provide a height of at least 120 cm.')
-        return
-      }
-      resolvedHeightCm = Math.round(cm)
+    const resolvedHeight = resolveHeightCmFromForm(form)
+    if (!resolvedHeight || resolvedHeight < 120) {
+      setError('Please provide a height of at least 120 cm (or equivalent).')
+      return
     }
+    const resolvedHeightCm = Math.round(resolvedHeight)
 
-    if (resolvedHeightCm === null) {
-      setError('Please add your height.')
+    const age = ageFromDob(form.dob)
+    if (!age || age < 16) {
+      setError('Please enter a valid date of birth (16+).')
       return
     }
 
@@ -156,6 +190,7 @@ const Onboarding = () => {
       sex: form.sex,
       height_cm: resolvedHeightCm,
       unit: form.unit,
+      dob: form.dob || undefined,
     })
 
     if (resolvedTargetKg !== null) {
@@ -185,7 +220,7 @@ const Onboarding = () => {
         <div className={styles.field}>
           <span className={styles.label}>Sex</span>
           <div className={styles.optionGroup} role="radiogroup" aria-label="Sex">
-            {(['female', 'male', 'unspecified'] as const).map((value) => (
+            {(['female', 'male'] as const).map((value) => (
               <button
                 key={value}
                 type="button"
@@ -196,10 +231,26 @@ const Onboarding = () => {
                 aria-pressed={form.sex === value}
                 onClick={() => setForm((state) => ({ ...state, sex: value }))}
               >
-                {value === 'unspecified' ? 'Prefer not to say' : value.charAt(0).toUpperCase() + value.slice(1)}
+                {value.charAt(0).toUpperCase() + value.slice(1)}
               </button>
             ))}
           </div>
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="dob">
+            Date of birth
+          </label>
+          <input
+            id="dob"
+            name="dob"
+            type="date"
+            value={form.dob}
+            max={maxDob}
+            onChange={(event) => setForm((state) => ({ ...state, dob: event.target.value }))}
+            required
+          />
+          <span className={styles.hint}>We use this to tailor BMI guidance for you.</span>
         </div>
 
         <div className={styles.field}>
@@ -300,13 +351,22 @@ const Onboarding = () => {
             inputMode="decimal"
             step="0.1"
             value={form.targetKg}
-            onChange={(event) => setForm((state) => ({ ...state, targetKg: event.target.value }))}
+            onChange={(event) => {
+              setTargetTouched(true)
+              setForm((state) => ({ ...state, targetKg: event.target.value }))
+            }}
             placeholder="e.g. 70.5"
           />
+          {suggestedTarget ? (
+            <p className={styles.suggestion}>
+              Suggested target <strong>{suggestedTarget.kg.toFixed(1)} kg</strong> (BMI{' '}
+              {suggestedTarget.bmi.toFixed(1)}), based on your age and sex.
+            </p>
+          ) : null}
         </div>
 
         <p className={styles.note}>
-          BMI is a general index that doesn't account for body composition. Adults only.
+          BMI guidance is a general index that doesn't account for body composition. Adults only.
         </p>
 
         {error ? (
@@ -328,12 +388,6 @@ const Onboarding = () => {
       </form>
     </section>
   )
-}
-
-const imperiallyBoundedHeight = (feet: number, inches: number) => {
-  const safeFeet = Math.max(feet, 0)
-  const safeInches = Math.min(Math.max(inches, 0), 11.99)
-  return imperialToCm(safeFeet, safeInches)
 }
 
 export default Onboarding

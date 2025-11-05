@@ -1,0 +1,7 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MASS pixel mark">
+  <rect width="32" height="32" rx="6" fill="#f5f2ea" />
+  <path d="M6 22h4v-8H6z" fill="#0f79e6" />
+  <path d="M12 22h4v-12h-4z" fill="#1e9d76" />
+  <path d="M18 22h4v-5h-4z" fill="#f3b21f" />
+  <path d="M10 25h12l-2.4 2.8c-.4.47-.34 1.18.13 1.58l.27.22H11.99l.27-.22c.47-.4.53-1.11.13-1.58z" fill="#081524" />
+</svg>

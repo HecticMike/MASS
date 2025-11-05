@@ -66,10 +66,63 @@
   gap: var(--space-md);
 }
 
+.prediction {
+  background: linear-gradient(135deg, rgba(15, 121, 230, 0.08), rgba(47, 159, 106, 0.08)),
+    var(--surface);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+}
+
+.predictionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+}
+
+.predictionBadge {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+}
+
+.predictionList {
+  list-style: none;
+  margin: var(--space-sm) 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.predictionRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  font-size: 0.9rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.predictionRow span:first-child {
+  font-weight: 600;
+}
+
+.predictionValue {
+  font-weight: 600;
+  text-align: right;
+}
+
+.predictionCopy {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+
 .card {
   background: linear-gradient(180deg, rgba(15, 143, 255, 0.06), rgba(255, 255, 255, 0.95));
   border: 1.5px solid color-mix(in srgb, var(--accent) 25%, var(--border));
-  border-top: 3px solid color-mix(in srgb, var(--accent) 65%, #ffffff);
+  border-top: 6px solid color-mix(in srgb, var(--accent) 65%, #ffffff);
   padding: var(--space-md);
   box-shadow: var(--shadow-soft);
   display: grid;
