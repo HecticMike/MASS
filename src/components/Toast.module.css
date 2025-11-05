@@ -3,11 +3,11 @@
   left: 50%;
   bottom: calc(var(--space-lg));
   transform: translateX(-50%);
-  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-tertiary) 100%);
+  background: var(--surface);
   padding: 0.85rem 1.4rem;
-  box-shadow: 0 18px 36px rgba(0, 134, 255, 0.4);
-  border: none;
-  color: #fff;
+  box-shadow: 0 18px 36px rgba(6, 22, 44, 0.12);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  color: var(--fg);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;

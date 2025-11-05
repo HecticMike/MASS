@@ -79,8 +79,8 @@
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: var(--surface-muted);
-  border: 1px solid rgba(0, 134, 255, 0.2);
+  background: var(--surface);
+  border: 1px solid var(--border);
   padding: 0.35rem 0.6rem;
 }
 

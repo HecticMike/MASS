@@ -41,7 +41,7 @@
 .subtitle {
   margin: 0;
   font-size: 0.95rem;
-  color: rgba(5, 39, 68, 0.75);
+  color: var(--ink-muted);
 }
 
 .ctaLink {

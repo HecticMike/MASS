@@ -1,7 +1,6 @@
 .pill {
-  background: linear-gradient(180deg, rgba(0, 134, 255, 0.08), rgba(255, 211, 77, 0.08)),
-    var(--surface);
-  border: 1.5px solid rgba(0, 134, 255, 0.25);
+  background: var(--surface);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 20%, transparent);
   padding: var(--space-md);
   display: grid;
   gap: var(--space-sm);
@@ -30,7 +29,7 @@
 .category {
   font-weight: 600;
   font-size: 0.95rem;
-  color: var(--accent-tertiary);
+  color: var(--fg);
 }
 
 .scale {
@@ -66,7 +65,7 @@
   width: 2px;
   height: 1.2rem;
   background: var(--fg);
-  box-shadow: 0 6px 18px rgba(0, 134, 255, 0.4);
+  box-shadow: 0 6px 18px rgba(15, 143, 255, 0.35);
   transform: translateX(-50%);
 }
 

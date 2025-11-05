@@ -6,7 +6,7 @@
 
 .intro {
   background: var(--surface);
-  border: 1.5px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 18%, transparent);
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -46,8 +46,8 @@
 }
 
 .optionButton {
-  border: 1.5px solid color-mix(in srgb, var(--accent) 8%, var(--border));
-  background: var(--surface);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 12%, var(--border));
+  background: var(--surface-muted);
   padding: 0.9rem 1rem;
   font-weight: 600;
   text-align: center;
@@ -57,7 +57,7 @@
 }
 
 .optionButtonActive {
-  background: color-mix(in srgb, var(--accent) 14%, #ffffff);
+  background: color-mix(in srgb, var(--accent) 18%, #ffffff);
   color: var(--fg);
   border-color: var(--accent);
 }
@@ -73,7 +73,7 @@
   font-size: 0.9rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-muted);
+  color: var(--fg);
 }
 
 .hint {
@@ -110,7 +110,6 @@
   margin: 0;
   border-top: 1px solid var(--border);
   padding-top: var(--space-sm);
-  background: linear-gradient(90deg, rgba(255, 211, 77, 0.25), transparent);
 }
 
 .actions {

@@ -9,9 +9,8 @@
   width: 100%;
   height: 260px;
   padding: var(--space-sm);
-  background: linear-gradient(180deg, rgba(0, 134, 255, 0.05), rgba(255, 211, 77, 0.05)),
-    var(--surface);
-  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
   box-shadow: var(--shadow-soft);
 }
 
@@ -48,7 +47,7 @@
 }
 
 .placeholder {
-  border: 1px dashed var(--border);
+  border: 1px dashed color-mix(in srgb, var(--accent) 30%, transparent);
   padding: var(--space-md);
   text-align: center;
   font-size: 0.9rem;
