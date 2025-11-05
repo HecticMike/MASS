@@ -10,7 +10,7 @@
   -moz-osx-font-smoothing: grayscale;
   --bg: #fdfdfb;
   --fg: #06162c;
-  --ink-muted: rgba(6, 22, 44, 0.6);
+  --ink-muted: rgba(6, 22, 44, 0.75);
   --surface: #ffffff;
   --surface-muted: #f7fafc;
   --surface-contrast: #eef2f7;
@@ -41,19 +41,12 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--bg);
+  background: #ffffff;
   color: var(--fg);
 }
 
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(circle at 1px 1px, rgba(15, 143, 255, 0.08) 1px, transparent 0);
-  background-size: 28px 28px;
-  opacity: 0.25;
-  pointer-events: none;
-  z-index: -1;
+  content: none;
 }
 
 #root {

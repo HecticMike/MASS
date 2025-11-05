@@ -21,7 +21,7 @@
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-muted);
+  color: var(--fg);
 }
 
 .toggle {
@@ -51,5 +51,5 @@
   padding: var(--space-md);
   text-align: center;
   font-size: 0.9rem;
-  color: var(--ink-muted);
+  color: var(--fg);
 }

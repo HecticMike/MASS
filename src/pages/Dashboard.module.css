@@ -41,7 +41,7 @@
 .subtitle {
   margin: 0;
   font-size: 0.95rem;
-  color: var(--ink-muted);
+  color: var(--fg);
 }
 
 .ctaLink {
@@ -88,7 +88,7 @@
 }
 
 .label {
-  color: var(--ink-muted);
+  color: var(--fg);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.72rem;
@@ -111,5 +111,5 @@
   padding: var(--space-md);
   text-align: center;
   font-size: 0.9rem;
-  color: var(--ink-muted);
+  color: var(--fg);
 }
