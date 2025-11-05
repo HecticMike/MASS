@@ -101,7 +101,11 @@
 }
 
 .navLinkActive {
-  background: color-mix(in srgb, var(--nav-accent, var(--accent)) 10%, #ffffff 90%);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--nav-accent, var(--accent)) 20%, #ffffff 80%),
+    #ffffff
+  );
   color: var(--fg);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nav-accent, var(--accent)) 35%, transparent);
 }

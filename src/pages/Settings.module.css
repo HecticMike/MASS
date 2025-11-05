@@ -5,8 +5,8 @@
 }
 
 .card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
+  background: linear-gradient(180deg, rgba(15, 143, 255, 0.05), rgba(255, 255, 255, 0.98));
+  border: 1.5px solid color-mix(in srgb, var(--accent-tertiary) 30%, var(--border));
   border-top: 3px solid color-mix(in srgb, var(--accent-tertiary) 55%, #ffffff);
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
@@ -79,8 +79,8 @@
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--accent-tertiary) 12%, #ffffff);
+  border: 1px solid color-mix(in srgb, var(--accent-tertiary) 35%, var(--border));
   padding: 0.35rem 0.6rem;
 }
 

@@ -46,7 +46,15 @@ body {
 }
 
 body::before {
-  content: none;
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(15, 143, 255, 0.08), transparent 45%),
+    radial-gradient(circle at 80% 0, rgba(57, 199, 127, 0.08), transparent 40%),
+    linear-gradient(180deg, rgba(255, 205, 85, 0.08), transparent 65%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 #root {

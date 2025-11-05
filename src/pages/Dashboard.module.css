@@ -5,8 +5,9 @@
 }
 
 .hero {
-  background: var(--surface);
-  border: 1.5px solid var(--border-strong);
+  background: linear-gradient(135deg, rgba(15, 143, 255, 0.12), rgba(57, 199, 127, 0.12)),
+    var(--surface);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 30%, transparent);
   padding: var(--space-lg);
   display: grid;
   gap: var(--space-sm);
@@ -48,8 +49,8 @@
   justify-self: start;
   margin-top: var(--space-sm);
   padding: 0.55rem 1.2rem;
-  border: 1.5px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.25);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -57,7 +58,7 @@
 }
 
 .ctaLink:hover {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .cards {
@@ -66,8 +67,8 @@
 }
 
 .card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
+  background: linear-gradient(180deg, rgba(15, 143, 255, 0.06), rgba(255, 255, 255, 0.95));
+  border: 1.5px solid color-mix(in srgb, var(--accent) 25%, var(--border));
   border-top: 3px solid color-mix(in srgb, var(--accent) 65%, #ffffff);
   padding: var(--space-md);
   box-shadow: var(--shadow-soft);

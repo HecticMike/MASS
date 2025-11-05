@@ -5,7 +5,8 @@
 }
 
 .intro {
-  background: var(--surface);
+  background: linear-gradient(135deg, rgba(15, 143, 255, 0.1), rgba(57, 199, 127, 0.08)),
+    var(--surface);
   border: 1.5px solid color-mix(in srgb, var(--accent) 18%, transparent);
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
@@ -29,8 +30,8 @@
   display: grid;
   gap: var(--space-md);
   padding: var(--space-lg);
-  border: 1.5px solid var(--border);
-  background: var(--surface);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 12%, var(--border));
+  background: linear-gradient(180deg, rgba(15, 143, 255, 0.05), rgba(255, 255, 255, 0.98));
   box-shadow: var(--shadow-soft);
 }
 
@@ -46,7 +47,7 @@
 }
 
 .optionButton {
-  border: 1.5px solid color-mix(in srgb, var(--accent) 12%, var(--border));
+  border: 1.5px solid color-mix(in srgb, var(--accent) 18%, var(--border));
   background: var(--surface-muted);
   padding: 0.9rem 1rem;
   font-weight: 600;
@@ -57,7 +58,7 @@
 }
 
 .optionButtonActive {
-  background: color-mix(in srgb, var(--accent) 18%, #ffffff);
+  background: linear-gradient(135deg, rgba(15, 143, 255, 0.12), rgba(57, 199, 127, 0.12));
   color: var(--fg);
   border-color: var(--accent);
 }
