@@ -107,7 +107,7 @@
 
 .info {
   font-size: 0.85rem;
-  color: var(--ink-muted);
+  color: var(--fg);
 }
 
 .danger {
