@@ -5,8 +5,8 @@
 }
 
 .intro {
-  background: linear-gradient(135deg, rgba(0, 134, 255, 0.12), rgba(55, 195, 141, 0.1));
-  border: 1.5px solid rgba(0, 134, 255, 0.2);
+  background: var(--surface);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 25%, transparent);
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -29,7 +29,7 @@
   display: grid;
   gap: var(--space-md);
   padding: var(--space-lg);
-  border: 1.5px solid var(--border-strong);
+  border: 1.5px solid var(--border);
   background: var(--surface);
   box-shadow: var(--shadow-soft);
 }
@@ -46,8 +46,8 @@
 }
 
 .optionButton {
-  border: 1.5px solid var(--border);
-  background: var(--surface-muted);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 8%, var(--border));
+  background: var(--surface);
   padding: 0.9rem 1rem;
   font-weight: 600;
   text-align: center;
@@ -57,9 +57,9 @@
 }
 
 .optionButtonActive {
-  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-tertiary) 100%);
-  color: #fff;
-  border-color: transparent;
+  background: color-mix(in srgb, var(--accent) 14%, #ffffff);
+  color: var(--fg);
+  border-color: var(--accent);
 }
 
 .labelRow {

@@ -76,27 +76,46 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--surface);
-  border-top: 2px solid var(--accent);
+  background: rgba(255, 255, 255, 0.95);
+  border-top: 2px solid var(--border-strong);
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -25px 40px rgba(12, 24, 41, 0.12);
 }
 
 .navLink {
-  padding: 0.85rem 0.5rem;
+  padding: 1rem 0.85rem;
   border: none;
   background: transparent;
   text-transform: uppercase;
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   color: var(--ink-muted);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .navLinkActive {
-  background: linear-gradient(120deg, rgba(0, 134, 255, 0.12), rgba(55, 195, 141, 0.12));
+  background: color-mix(in srgb, var(--nav-accent, var(--accent)) 16%, #ffffff 84%);
   color: var(--fg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nav-accent, var(--accent)) 40%, transparent);
+}
+
+.navLinkDashboard {
+  --nav-accent: var(--accent);
+}
+
+.navLinkLog {
+  --nav-accent: var(--accent-tertiary);
+}
+
+.navLinkProfile {
+  --nav-accent: var(--accent-secondary);
 }
 
 .navLabel {

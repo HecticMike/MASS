@@ -39,7 +39,13 @@ const Layout = () => {
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
-            [styles.navLink, isActive ? styles.navLinkActive : ''].join(' ').trim()
+            [
+              styles.navLink,
+              styles.navLinkDashboard,
+              isActive ? styles.navLinkActive : '',
+            ]
+              .join(' ')
+              .trim()
           }
         >
           <span className={styles.navLabel}>Dashboard</span>
@@ -47,7 +53,9 @@ const Layout = () => {
         <NavLink
           to="/log"
           className={({ isActive }) =>
-            [styles.navLink, isActive ? styles.navLinkActive : ''].join(' ').trim()
+            [styles.navLink, styles.navLinkLog, isActive ? styles.navLinkActive : '']
+              .join(' ')
+              .trim()
           }
         >
           <span className={styles.navLabel}>Log</span>
@@ -55,7 +63,13 @@ const Layout = () => {
         <NavLink
           to="/onboarding"
           className={({ isActive }) =>
-            [styles.navLink, isActive ? styles.navLinkActive : ''].join(' ').trim()
+            [
+              styles.navLink,
+              styles.navLinkProfile,
+              isActive ? styles.navLinkActive : '',
+            ]
+              .join(' ')
+              .trim()
           }
         >
           <span className={styles.navLabel}>Profile</span>

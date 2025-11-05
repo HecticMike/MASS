@@ -5,10 +5,9 @@
 }
 
 .card {
-  background: linear-gradient(180deg, rgba(0, 134, 255, 0.04), rgba(255, 211, 77, 0.06)),
-    var(--surface);
-  border: 1.5px solid var(--border-strong);
-  border-top: 3px solid var(--accent-tertiary);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-top: 3px solid color-mix(in srgb, var(--accent-tertiary) 55%, #ffffff);
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -33,17 +32,17 @@
 
 .radioButton {
   padding: 0.55rem 0.95rem;
-  border: 1.5px solid rgba(0, 134, 255, 0.25);
-  background: var(--surface-muted);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+  background: var(--surface);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .radioActive {
-  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-tertiary) 100%);
-  color: #fff;
-  border-color: transparent;
+  background: color-mix(in srgb, var(--accent) 18%, #ffffff);
+  color: var(--fg);
+  border-color: var(--accent);
 }
 
 .inlineInputs {
@@ -59,12 +58,12 @@
 
 .buttonSecondary {
   background: transparent;
-  border: 1.5px solid rgba(255, 211, 77, 0.7);
+  border: 1.5px solid color-mix(in srgb, var(--accent-secondary) 55%, transparent);
   color: inherit;
 }
 
 .buttonSecondary:hover {
-  background: rgba(255, 211, 77, 0.15);
+  background: color-mix(in srgb, var(--accent-secondary) 18%, #ffffff);
 }
 
 .checkboxGroup {

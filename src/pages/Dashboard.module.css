@@ -5,21 +5,22 @@
 }
 
 .hero {
-  background: linear-gradient(135deg, rgba(0, 134, 255, 0.2), rgba(255, 211, 77, 0.25));
-  border: 1.5px solid rgba(0, 134, 255, 0.3);
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
   padding: var(--space-lg);
   display: grid;
   gap: var(--space-sm);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-soft);
 }
 
 .hero::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(120deg, transparent 45%, rgba(55, 195, 141, 0.25));
-  mix-blend-mode: screen;
+  background-image: linear-gradient(120deg, rgba(0, 134, 255, 0.08), transparent 60%);
+  pointer-events: none;
 }
 
 .heroContent {
@@ -67,7 +68,7 @@
 .card {
   background: var(--surface);
   border: 1.5px solid var(--border);
-  border-top: 3px solid var(--accent);
+  border-top: 3px solid color-mix(in srgb, var(--accent) 65%, #ffffff);
   padding: var(--space-md);
   box-shadow: var(--shadow-soft);
   display: grid;
