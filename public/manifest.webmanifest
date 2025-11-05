@@ -2,11 +2,11 @@
   "name": "MASS",
   "short_name": "MASS",
   "description": "Track body metrics with lightweight logs, dashboards, and trends.",
-  "start_url": "./dashboard",
+  "start_url": "./#/dashboard",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#6c63ff",
+  "background_color": "#0c1829",
+  "theme_color": "#0086ff",
   "orientation": "portrait-primary",
   "icons": [
     {
