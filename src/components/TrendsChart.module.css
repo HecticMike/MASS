@@ -12,6 +12,7 @@
   background: var(--surface);
   border: 1.5px solid var(--border);
   box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-lg);
 }
 
 .legend {
@@ -34,6 +35,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: inherit;
+  border-radius: var(--radius-pill);
 }
 
 .toggleInactive {
@@ -44,6 +46,7 @@
   width: 0.75rem;
   height: 0.75rem;
   flex-shrink: 0;
+  border-radius: 6px;
 }
 
 .placeholder {
@@ -52,4 +55,5 @@
   text-align: center;
   font-size: 0.9rem;
   color: var(--fg);
+  border-radius: var(--radius-lg);
 }

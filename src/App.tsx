@@ -5,7 +5,6 @@ import Dashboard from './pages/Dashboard'
 import LogEntry from './pages/LogEntry'
 import Onboarding from './pages/Onboarding'
 import Settings from './pages/Settings'
-import mark from './assets/logo.svg'
 
 const routeTitles: Record<string, string> = {
   '/dashboard': 'Dashboard',
@@ -23,8 +22,9 @@ const Layout = () => {
       <header className={styles.header}>
         <div className={styles.brandGroup}>
           <div className={styles.brandRow}>
-            <img src={mark} alt="MASS logo" className={styles.brandMark} />
-            <span className={styles.brand}>MASS</span>
+            <span className={styles.brand} aria-label="MASS">
+              mass
+            </span>
           </div>
           <span className={styles.routeTitle}>{title}</span>
         </div>

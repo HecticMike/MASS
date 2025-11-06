@@ -12,6 +12,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   z-index: 2000;
+  border-radius: var(--radius-md);
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -10,7 +10,7 @@
   max-width: 760px;
   display: flex;
   flex-direction: column;
-  padding: var(--space-lg) var(--space-md) calc(var(--space-lg) + 84px);
+  padding: 0 var(--space-md) calc(var(--space-lg) + 96px);
   gap: var(--space-md);
 }
 
@@ -18,14 +18,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.1rem 1.4rem;
+  padding: 0.1rem 1rem 0.2rem;
   background: var(--surface);
   border: 1.5px solid var(--border-strong);
   border-top: 6px solid var(--accent-secondary);
+  border-radius: var(--radius-lg);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   position: sticky;
-  top: var(--space-md);
+  top: 1rem;
   z-index: 10;
   box-shadow: var(--shadow-soft);
 }
@@ -33,29 +34,35 @@
 .brandGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 2rem;
+  align-items: flex-start;
+  width: fit-content;
+  max-width: 100%;
 }
 
 .brandRow {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-}
-
-.brandMark {
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--border-strong);
-  border-radius: 6px;
-  background: #fff;
-  padding: 2px;
-  box-shadow: 0 6px 14px rgba(8, 21, 36, 0.12);
+  gap: 0;
 }
 
 .brand {
-  font-weight: 600;
-  font-size: 2.8rem;
-  letter-spacing: 0;
+  font-family: 'Pacifico', 'Brush Script MT', cursive;
+  font-weight: 400;
+  font-size: clamp(4.9rem, 10vw, 6rem);
+  line-height: 0.85;
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-secondary);
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0em 0.05em;
+  border-radius: var(--radius-lg);
+  text-shadow: -1px -1px 0 #081524, 1px -1px 0 #081524, -1px 1px 0 #081524, 1px 1px 0 #081524,
+    0 6px 10px rgba(8, 21, 36, 0.35);
+  filter: drop-shadow(0 6px 10px rgba(8, 21, 36, 0.22));
+  transform: rotate(-3deg);
+  transform-origin: left bottom;
 }
 
 .routeTitle {
@@ -63,6 +70,9 @@
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
+  align-self: stretch;
+  text-align: left;
+  padding-left: 0.1rem;
 }
 
 .settingsLink {
@@ -74,6 +84,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fg);
+  border-radius: var(--radius-pill);
 }
 
 .main {
@@ -92,13 +103,15 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -0.65rem;
   background: rgba(255, 255, 255, 0.95);
   border-top: 2px solid var(--border-strong);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
   box-shadow: 0 -25px 40px rgba(12, 24, 41, 0.12);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  backdrop-filter: blur(10px);
 }
 
 .navLink {
@@ -112,9 +125,11 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.35rem;
   align-items: center;
   justify-content: center;
+  border-radius: var(--radius-md);
+  transition: background 0.2s ease;
 }
 
 .navLinkActive {
@@ -142,4 +157,3 @@
 .navLabel {
   font-size: 0.75rem;
 }
-

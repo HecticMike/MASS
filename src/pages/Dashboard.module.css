@@ -14,6 +14,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-lg);
 }
 
 .hero::after {
@@ -70,6 +71,7 @@
   background: linear-gradient(135deg, rgba(15, 121, 230, 0.08), rgba(47, 159, 106, 0.08)),
     var(--surface);
   border: 1.5px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+  border-radius: var(--radius-lg);
 }
 
 .predictionHeader {
@@ -127,6 +129,7 @@
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: 0.65rem;
+  border-radius: var(--radius-lg);
 }
 
 .progressGrid {
@@ -166,4 +169,5 @@
   text-align: center;
   font-size: 0.9rem;
   color: var(--fg);
+  border-radius: var(--radius-lg);
 }

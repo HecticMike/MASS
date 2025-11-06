@@ -12,6 +12,7 @@
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-md);
+  border-radius: var(--radius-lg);
 }
 
 .form {
@@ -37,6 +38,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  border-radius: var(--radius-md);
 }
 
 .radioActive {
@@ -82,6 +84,7 @@
   background: color-mix(in srgb, var(--accent-tertiary) 12%, #ffffff);
   border: 1px solid color-mix(in srgb, var(--accent-tertiary) 35%, var(--border));
   padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
 }
 
 .sectionTitle {
@@ -115,6 +118,7 @@
   border: 1.5px solid var(--danger);
   color: var(--danger);
   text-transform: uppercase;
+  border-radius: var(--radius-md);
 }
 
 .danger:hover {

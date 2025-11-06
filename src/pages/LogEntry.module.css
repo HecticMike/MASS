@@ -11,6 +11,7 @@
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-md);
+  border-radius: var(--radius-lg);
 }
 
 .form {
@@ -88,6 +89,7 @@
   border: 1.5px solid color-mix(in srgb, var(--accent-tertiary) 25%, var(--border));
   background: linear-gradient(180deg, rgba(57, 199, 127, 0.08), rgba(255, 255, 255, 0.95));
   box-shadow: 0 12px 25px rgba(12, 24, 41, 0.05);
+  border-radius: var(--radius-md);
 }
 
 .historyRow {
@@ -115,4 +117,5 @@
   font-size: 0.9rem;
   color: var(--fg);
   background: #fff;
+  border-radius: var(--radius-lg);
 }

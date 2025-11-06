@@ -12,6 +12,7 @@
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-sm);
+  border-radius: var(--radius-lg);
 }
 
 .introTitle {
@@ -33,6 +34,7 @@
   border: 1.5px solid color-mix(in srgb, var(--accent) 12%, var(--border));
   background: linear-gradient(180deg, rgba(15, 143, 255, 0.05), rgba(255, 255, 255, 0.98));
   box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-lg);
 }
 
 .field {
@@ -55,6 +57,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  border-radius: var(--radius-md);
 }
 
 .optionButtonActive {
@@ -129,6 +132,7 @@
   background: transparent;
   color: var(--fg);
   border: 1.5px dashed var(--accent-secondary);
+  border-radius: var(--radius-md);
 }
 
 .secondary:hover {

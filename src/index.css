@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
   font-family: 'Space Grotesk', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -22,7 +22,10 @@
   --border-strong: rgba(8, 21, 36, 0.32);
   --success: #2aa67c;
   --danger: #e54848;
-  --radius: 0;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
   --space-xs: 0.35rem;
   --space-sm: 0.85rem;
   --space-md: 1.4rem;
@@ -76,7 +79,7 @@ select {
 
 button {
   border: 1.5px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  border-radius: 0;
+  border-radius: var(--radius-md);
   background: #ffffff;
   color: var(--fg);
   padding: 0.95rem 1.4rem;
@@ -109,7 +112,7 @@ textarea,
 select {
   width: 100%;
   padding: 0.85rem 1rem;
-  border-radius: 0;
+  border-radius: var(--radius-sm);
   border: 1.5px solid var(--border-strong);
   background: var(--surface);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
