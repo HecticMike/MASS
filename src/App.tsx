@@ -1,4 +1,4 @@
-import { Link, Navigate, NavLink, Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, NavLink, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import styles from './App.module.css'
 import { MassProvider } from './context/MassContext'
 import Dashboard from './pages/Dashboard'
@@ -28,9 +28,6 @@ const Layout = () => {
           </div>
           <span className={styles.routeTitle}>{title}</span>
         </div>
-        <Link to="/settings" className={styles.settingsLink}>
-          Settings
-        </Link>
       </header>
 
       <main className={styles.main}>
