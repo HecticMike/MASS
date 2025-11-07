@@ -104,7 +104,7 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: -0.65rem;
+  bottom: 0;
   background: rgba(255, 255, 255, 0.95);
   border-top: 2px solid var(--border-strong);
   display: grid;
@@ -113,6 +113,7 @@
   box-shadow: 0 -25px 40px rgba(12, 24, 41, 0.12);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   backdrop-filter: blur(10px);
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .navLink {
