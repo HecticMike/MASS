@@ -287,8 +287,8 @@ const Settings = () => {
         </div>
 
         <div className={styles.field}>
+          <span className={`${styles.label} ${styles.checkboxPanelLabel}`}>Include sections</span>
           <div className={styles.checkboxPanel}>
-            <span className={styles.checkboxPanelLabel}>Include sections</span>
             <div className={styles.checkboxGroup}>
               {includeSectionItems.map((item) => (
                 <label key={item.key} className={styles.checkbox}>

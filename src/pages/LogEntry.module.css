@@ -1,21 +1,14 @@
 .container {
-  display: grid;
-  gap: var(--space-lg);
   width: 100%;
   max-width: 100%;
-  justify-items: stretch;
-  align-items: stretch;
-  grid-template-columns: minmax(0, 1fr);
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: stretch;
+  justify-content: stretch;
   min-width: 0;
   box-sizing: border-box;
-}
-
-.container > * {
-  width: 100%;
-  max-width: 100%;
-  justify-self: stretch;
-  align-self: stretch;
 }
 
 .card {
@@ -90,18 +83,22 @@
 }
 
 .history {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-sm);
   width: 100%;
+  min-width: 0;
 }
 
 .historyList {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
   width: 100%;
+  min-width: 0;
 }
 
 .historyItem {
@@ -113,6 +110,7 @@
   box-shadow: 0 12px 25px rgba(12, 24, 41, 0.05);
   border-radius: var(--radius-md);
   width: 100%;
+  min-width: 0;
 }
 
 .historyRow {
