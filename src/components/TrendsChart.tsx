@@ -38,6 +38,30 @@ const COLORS = {
 
 const MS_PER_DAY = 86_400_000
 
+const niceTickStep = (rawStep: number): number => {
+  if (!Number.isFinite(rawStep) || rawStep <= 0) {
+    return 0.5
+  }
+
+  const exponent = Math.floor(Math.log10(rawStep))
+  const fraction = rawStep / 10 ** exponent
+  let niceFraction: number
+
+  if (fraction < 1.5) {
+    niceFraction = 1
+  } else if (fraction < 3) {
+    niceFraction = 2
+  } else if (fraction < 7) {
+    niceFraction = 5
+  } else {
+    niceFraction = 10
+  }
+
+  return niceFraction * 10 ** exponent
+}
+
+const normalizeTickValue = (value: number) => Number(value.toFixed(1))
+
 const TrendTooltip = ({ active, payload }: { active?: boolean; payload?: TooltipPayloadItem[] }) => {
   if (!active || !payload || payload.length === 0) {
     return null
@@ -165,21 +189,26 @@ const TrendsChart = ({ entries, unit }: TrendsChartProps) => {
     const axisMin = Math.floor((minKg - 1) * 10) / 10
     const axisMaxCandidate = Math.ceil((maxKg + 1) * 10) / 10
     const axisMax = axisMaxCandidate > axisMin ? axisMaxCandidate : axisMin + 0.2
+    const axisRange = Math.max(0.2, axisMax - axisMin)
     const targetTicks = 5
-    const rawStep = (axisMax - axisMin) / (targetTicks - 1)
-    const step = Math.max(0.1, Number(rawStep.toFixed(1)))
+    const rawStep = axisRange / Math.max(targetTicks - 1, 1)
+    const step = niceTickStep(rawStep)
+    const safeStep = step > 0 ? step : 0.5
+    const niceMin = Math.floor(axisMin / safeStep) * safeStep
+    const niceMax = Math.ceil(axisMax / safeStep) * safeStep
     const tickValues = new Set<number>()
-    for (let i = 0; i < targetTicks; i += 1) {
-      tickValues.add(Number((axisMin + step * i).toFixed(1)))
+    for (let tick = niceMin; tick <= niceMax + safeStep / 2; tick += safeStep) {
+      tickValues.add(normalizeTickValue(tick))
     }
-    tickValues.add(Number(axisMax.toFixed(1)))
+    tickValues.add(normalizeTickValue(niceMin))
+    tickValues.add(normalizeTickValue(niceMax))
     const yTicks = Array.from(tickValues).sort((a, b) => a - b)
 
     return {
       trendData: trend,
       asymptoteData: asymptote,
       domainX: [minTime, maxTime] as [number, number],
-      domainY: [axisMin, axisMax] as [number, number],
+      domainY: [niceMin, niceMax] as [number, number],
       yTicks,
     }
   }, [baseData])
