@@ -25,6 +25,20 @@
   gap: 0.4rem;
 }
 
+.checkboxPanel {
+  background: var(--surface);
+  border: 1.5px solid color-mix(in srgb, var(--accent-tertiary) 40%, var(--border));
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm);
+  display: grid;
+  gap: 0.35rem;
+}
+
+.checkboxPanelLabel {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
 .radioGroup {
   display: flex;
   flex-wrap: wrap;

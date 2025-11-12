@@ -19,16 +19,15 @@ type TrendsChartProps = {
   unit: 'kg' | 'lb'
 }
 
-type TooltipProps = {
-  active?: boolean
-  payload?: Array<{
-    payload: {
-      kg: number
-      time: number
-      ts: string
-      note?: string
-    }
-  }>
+type TooltipPayloadItem = {
+  payload: {
+    kg?: number
+    trend?: number
+    asymptote?: number
+    time?: number
+    ts?: string
+    note?: string
+  }
 }
 
 const COLORS = {
@@ -39,12 +38,41 @@ const COLORS = {
 
 const MS_PER_DAY = 86_400_000
 
-const TrendTooltip = ({ active, payload }: TooltipProps) => {
+const TrendTooltip = ({ active, payload }: { active?: boolean; payload?: TooltipPayloadItem[] }) => {
   if (!active || !payload || payload.length === 0) {
     return null
   }
 
-  const datum = payload[0]!.payload
+  const datumSource = payload
+    .map((item) => item.payload)
+    .find(
+      (candidate) =>
+        typeof candidate.kg === 'number' ||
+        typeof candidate.trend === 'number' ||
+        typeof candidate.asymptote === 'number',
+    )
+  const datum = datumSource ?? payload[0]!.payload
+
+  const weightValue =
+    typeof datum.kg === 'number'
+      ? datum.kg
+      : typeof datum.trend === 'number'
+      ? datum.trend
+      : typeof datum.asymptote === 'number'
+      ? datum.asymptote
+      : null
+
+  if (weightValue === null) {
+    return null
+  }
+
+  const timestamp =
+    datum.ts ?? (typeof datum.time === 'number' ? new Date(datum.time).toISOString() : undefined)
+
+  if (!timestamp) {
+    return null
+  }
+
   return (
     <div
       style={{
@@ -54,8 +82,8 @@ const TrendTooltip = ({ active, payload }: TooltipProps) => {
         boxShadow: 'var(--shadow-soft)',
       }}
     >
-      <div style={{ fontWeight: 600 }}>{format(datum.ts)}</div>
-      <div style={{ fontSize: '0.9rem' }}>{datum.kg.toFixed(1)} kg</div>
+      <div style={{ fontWeight: 600 }}>{format(timestamp)}</div>
+      <div style={{ fontSize: '0.9rem' }}>{weightValue.toFixed(1)} kg</div>
       {datum.note ? <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>{datum.note}</div> : null}
     </div>
   )
@@ -83,6 +111,7 @@ const TrendsChart = ({ entries, unit }: TrendsChartProps) => {
     asymptoteData,
     domainX,
     domainY,
+    yTicks,
   } = useMemo(() => {
     if (baseData.length < 2) {
       return {
@@ -90,6 +119,7 @@ const TrendsChart = ({ entries, unit }: TrendsChartProps) => {
         asymptoteData: null as Array<{ time: number; asymptote: number }> | null,
         domainX: undefined,
         domainY: undefined,
+        yTicks: undefined,
       }
     }
 
@@ -112,26 +142,45 @@ const TrendsChart = ({ entries, unit }: TrendsChartProps) => {
         : Array.from({ length: samples }, (_, index) => minX + ((maxX - minX) * index) / (samples - 1))
 
     const smooth = loessSmooth(normalizedPoints, 0.3, sampleXs)
-    const trend = smooth.map((point) => ({
-      time: minTime + point.x * MS_PER_DAY,
-      trend: point.y,
-    }))
+    const trend = smooth.map((point) => {
+      const time = minTime + point.x * MS_PER_DAY
+      return {
+        time,
+        ts: new Date(time).toISOString(),
+        trend: point.y,
+      }
+    })
 
     const asymptoteFit = fitAsymptote(normalizedPoints, sampleXs)
     const asymptote =
-      asymptoteFit?.points.map((point) => ({
-        time: minTime + point.x * MS_PER_DAY,
-        asymptote: point.y,
-      })) ?? null
+      asymptoteFit?.points.map((point) => {
+        const time = minTime + point.x * MS_PER_DAY
+        return {
+          time,
+          ts: new Date(time).toISOString(),
+          asymptote: point.y,
+        }
+      }) ?? null
+
+    const axisMin = Math.floor((minKg - 1) * 10) / 10
+    const axisMaxCandidate = Math.ceil((maxKg + 1) * 10) / 10
+    const axisMax = axisMaxCandidate > axisMin ? axisMaxCandidate : axisMin + 0.2
+    const targetTicks = 5
+    const rawStep = (axisMax - axisMin) / (targetTicks - 1)
+    const step = Math.max(0.1, Number(rawStep.toFixed(1)))
+    const tickValues = new Set<number>()
+    for (let i = 0; i < targetTicks; i += 1) {
+      tickValues.add(Number((axisMin + step * i).toFixed(1)))
+    }
+    tickValues.add(Number(axisMax.toFixed(1)))
+    const yTicks = Array.from(tickValues).sort((a, b) => a - b)
 
     return {
       trendData: trend,
       asymptoteData: asymptote,
       domainX: [minTime, maxTime] as [number, number],
-      domainY: [
-        Math.floor((minKg - 1) * 10) / 10,
-        Math.ceil((maxKg + 1) * 10) / 10,
-      ] as [number, number],
+      domainY: [axisMin, axisMax] as [number, number],
+      yTicks,
     }
   }, [baseData])
 
@@ -175,7 +224,7 @@ const TrendsChart = ({ entries, unit }: TrendsChartProps) => {
               type="number"
               domain={domainY}
               tickFormatter={(value) => `${value.toFixed(1)} kg`}
-              tickCount={5}
+              ticks={yTicks}
               tick={{ fontSize: 12 }}
             />
             <Tooltip content={<TrendTooltip />} />
