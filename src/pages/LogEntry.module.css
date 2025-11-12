@@ -9,6 +9,13 @@
   box-sizing: border-box;
 }
 
+.container > * {
+  width: 100%;
+  max-width: 100%;
+  justify-self: stretch;
+  align-self: stretch;
+}
+
 .card {
   background: linear-gradient(180deg, rgba(255, 205, 85, 0.12), rgba(255, 255, 255, 0.96));
   border: 1.5px solid color-mix(in srgb, var(--accent-secondary) 35%, var(--border));
@@ -83,6 +90,7 @@
 .history {
   display: grid;
   gap: var(--space-sm);
+  width: 100%;
 }
 
 .historyList {
@@ -91,6 +99,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  width: 100%;
 }
 
 .historyItem {
@@ -101,6 +110,7 @@
   background: linear-gradient(180deg, rgba(57, 199, 127, 0.08), rgba(255, 255, 255, 0.95));
   box-shadow: 0 12px 25px rgba(12, 24, 41, 0.05);
   border-radius: var(--radius-md);
+  width: 100%;
 }
 
 .historyRow {
