@@ -29,7 +29,7 @@
   background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent-tertiary) 35%, var(--border));
   border-radius: var(--radius-lg);
-  padding: 0.5rem 0.65rem;
+  padding: 0.65rem;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -91,9 +91,8 @@
 }
 
 .checkbox {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
   gap: 0.35rem;
   font-size: 0.85rem;
   letter-spacing: 0.05em;
@@ -102,12 +101,6 @@
   border: none;
   padding: 0;
   border-radius: 0;
-  width: 100%;
-}
-
-.checkbox span {
-  flex: 1;
-  text-align: left;
 }
 
 .sectionTitle {

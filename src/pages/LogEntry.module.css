@@ -4,6 +4,8 @@
   width: 100%;
   max-width: 100%;
   justify-items: stretch;
+  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr);
   flex: 1;
   min-width: 0;
   box-sizing: border-box;
