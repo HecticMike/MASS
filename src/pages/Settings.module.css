@@ -27,9 +27,9 @@
 
 .checkboxPanel {
   background: var(--surface);
-  border: 1.5px solid color-mix(in srgb, var(--accent-tertiary) 40%, var(--border));
+  border: 1px solid color-mix(in srgb, var(--accent-tertiary) 35%, var(--border));
   border-radius: var(--radius-lg);
-  padding: var(--space-sm);
+  padding: 0.3rem;
   display: grid;
   gap: 0.35rem;
 }
@@ -37,6 +37,7 @@
 .checkboxPanelLabel {
   font-size: 0.75rem;
   letter-spacing: 0.1em;
+  margin-bottom: 0;
 }
 
 .radioGroup {
@@ -84,8 +85,8 @@
 
 .checkboxGroup {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
 .checkbox {
@@ -97,7 +98,7 @@
   text-transform: uppercase;
   background: color-mix(in srgb, var(--accent-tertiary) 12%, #ffffff);
   border: 1px solid color-mix(in srgb, var(--accent-tertiary) 35%, var(--border));
-  padding: 0.35rem 0.6rem;
+  padding: 0.2rem 0.4rem;
   border-radius: var(--radius-sm);
 }
 
