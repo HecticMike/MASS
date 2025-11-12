@@ -2,6 +2,8 @@
   display: grid;
   gap: var(--space-lg);
   width: 100%;
+  align-items: stretch;
+  box-sizing: border-box;
 }
 
 .card {
@@ -12,6 +14,8 @@
   display: grid;
   gap: var(--space-md);
   border-radius: var(--radius-lg);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form {

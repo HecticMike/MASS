@@ -92,14 +92,14 @@
 .checkbox {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: color-mix(in srgb, var(--accent-tertiary) 12%, #ffffff);
-  border: 1px solid color-mix(in srgb, var(--accent-tertiary) 35%, var(--border));
-  padding: 0.2rem 0.4rem;
-  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
 }
 
 .sectionTitle {
