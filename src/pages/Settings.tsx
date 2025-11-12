@@ -153,6 +153,11 @@ const Settings = () => {
   }
 
   const entryCount = entries.length
+  const includeSectionItems: Array<{ key: keyof typeof includeSections; label: string }> = [
+    { key: 'profile', label: 'Profile' },
+    { key: 'goal', label: 'Goal' },
+    { key: 'entries', label: 'Entries' },
+  ]
 
   return (
     <section className={styles.container}>
@@ -282,33 +287,19 @@ const Settings = () => {
         </div>
 
         <div className={styles.field}>
-          <span className={`${styles.label} ${styles.checkboxPanelLabel}`}>Include sections</span>
           <div className={styles.checkboxPanel}>
+            <span className={styles.checkboxPanelLabel}>Include sections</span>
             <div className={styles.checkboxGroup}>
-              <label className={styles.checkbox}>
-                <input
-                  type="checkbox"
-                  checked={includeSections.profile}
-                  onChange={() => handleSectionToggle('profile')}
-                />
-                <span>Profile</span>
-              </label>
-              <label className={styles.checkbox}>
-                <input
-                  type="checkbox"
-                  checked={includeSections.goal}
-                  onChange={() => handleSectionToggle('goal')}
-                />
-                <span>Goal</span>
-              </label>
-              <label className={styles.checkbox}>
-                <input
-                  type="checkbox"
-                  checked={includeSections.entries}
-                  onChange={() => handleSectionToggle('entries')}
-                />
-                <span>Entries</span>
-              </label>
+              {includeSectionItems.map((item) => (
+                <label key={item.key} className={styles.checkbox}>
+                  <input
+                    type="checkbox"
+                    checked={includeSections[item.key]}
+                    onChange={() => handleSectionToggle(item.key)}
+                  />
+                  <span>{item.label}</span>
+                </label>
+              ))}
             </div>
           </div>
         </div>
