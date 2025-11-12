@@ -174,7 +174,8 @@ const TrendsChart = ({ entries, unit }: TrendsChartProps) => {
               dataKey="kg"
               type="number"
               domain={domainY}
-              tickFormatter={(value) => `${value.toFixed(0)} kg`}
+              tickFormatter={(value) => `${value.toFixed(1)} kg`}
+              tickCount={5}
               tick={{ fontSize: 12 }}
             />
             <Tooltip content={<TrendTooltip />} />

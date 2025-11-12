@@ -1,11 +1,13 @@
-# React + TypeScript + Vite
+# MASS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MASS is a Vite + React + TypeScript app. Use the standard Vite scripts to work on this project:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+npm run dev       # start Vite dev server
+npm run build     # type-check and build
+npm run preview   # preview production build
+```
 
 ## React Compiler
 
@@ -71,3 +73,7 @@ export default defineConfig([
   },
 ])
 ```
+
+## Launch Lab Switchboard
+
+The desktop launcher now lives outside this project under `../LLS`. See its README for usage and branding instructions.

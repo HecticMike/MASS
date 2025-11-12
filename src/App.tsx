@@ -62,7 +62,7 @@ const Layout = () => {
           <span className={styles.navLabel}>Log</span>
         </NavLink>
         <NavLink
-          to="/onboarding"
+          to="/settings"
           className={({ isActive }) =>
             [
               styles.navLink,

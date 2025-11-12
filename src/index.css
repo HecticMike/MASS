@@ -33,6 +33,7 @@
   --shadow-soft: 0 35px 60px rgba(8, 21, 36, 0.12);
   background-color: var(--bg);
   color: var(--fg);
+  --bottom-nav-space: 96px;
 }
 
 *, 

@@ -2,6 +2,8 @@
   min-height: 100vh;
   color: var(--fg);
   background: var(--bg);
+  display: flex;
+  flex-direction: column;
 }
 
 .layout {
@@ -10,7 +12,7 @@
   max-width: 760px;
   display: flex;
   flex-direction: column;
-  padding: 0 var(--space-md) calc(var(--space-lg) + 96px);
+  padding: 0 var(--space-md) calc(var(--space-lg) + var(--bottom-nav-space));
   gap: var(--space-sm);
 }
 
@@ -102,7 +104,8 @@
   box-shadow: 0 -25px 40px rgba(12, 24, 41, 0.12);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   backdrop-filter: blur(10px);
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0) + var(--space-xs));
+  z-index: 20;
 }
 
 .navLink {
