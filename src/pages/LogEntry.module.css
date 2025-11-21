@@ -18,7 +18,7 @@
     color-mix(in srgb, var(--accent-soft) 18%, var(--surface))
   );
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -112,7 +112,7 @@
   gap: 0.35rem;
   padding: 0.95rem 1.1rem;
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   background: color-mix(in srgb, var(--accent-tertiary) 12%, var(--surface));
   box-shadow: none;
   width: 100%;

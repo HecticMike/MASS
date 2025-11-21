@@ -89,14 +89,14 @@
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: var(--space-sm);
-  padding: 1rem 1.1rem;
+  padding: 0.9rem 1rem;
   background: linear-gradient(
     135deg,
     color-mix(in srgb, var(--accent-soft) 65%, var(--surface)),
     color-mix(in srgb, var(--accent-secondary) 30%, var(--surface))
   );
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   box-shadow: 0 16px 40px rgba(3, 9, 21, 0.18);
   backdrop-filter: blur(8px);
 }
@@ -122,28 +122,17 @@
 .brand {
   font-family: 'Space Grotesk', 'Manrope', sans-serif;
   font-weight: 700;
-  font-size: clamp(1.55rem, 4vw, 2.15rem);
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
   letter-spacing: -0.03em;
   text-transform: uppercase;
   color: transparent;
   padding: 0.05rem 0.45rem;
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
-  background: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%);
+  border-image: var(--rainbow) 1;
+  background: var(--rainbow);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.brandBadge {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--ink-muted);
-  background: color-mix(in srgb, var(--accent-tertiary) 20%, var(--surface));
-  padding: 0.35rem 0.65rem;
-  border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
 }
 
 .routeTitle {
@@ -176,7 +165,7 @@
     color-mix(in srgb, var(--accent-tertiary) 12%, var(--surface))
   );
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 700;

@@ -5,7 +5,7 @@
     color-mix(in srgb, var(--accent-tertiary) 12%, var(--surface))
   );
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   padding: var(--space-md);
   display: grid;
   gap: var(--space-sm);

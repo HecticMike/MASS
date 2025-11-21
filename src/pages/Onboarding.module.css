@@ -11,7 +11,7 @@
     color-mix(in srgb, var(--accent-tertiary) 16%, var(--surface))
   );
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -35,7 +35,7 @@
   gap: var(--space-md);
   padding: var(--space-lg);
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   background: color-mix(in srgb, var(--accent-soft) 18%, var(--surface));
   box-shadow: var(--shadow-soft);
 }
@@ -52,9 +52,9 @@
 }
 
 .optionButton {
-  border: 1.5px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+  border: 1.2px solid color-mix(in srgb, var(--accent) 18%, var(--border));
   background: var(--glass);
-  padding: 0.9rem 1rem;
+  padding: 0.75rem 0.9rem;
   font-weight: 700;
   text-align: center;
   letter-spacing: 0.08em;

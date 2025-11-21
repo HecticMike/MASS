@@ -11,7 +11,7 @@
     color-mix(in srgb, var(--accent-secondary) 14%, var(--surface))
   );
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   position: relative;
   overflow: hidden;
 }
@@ -75,7 +75,7 @@
     color-mix(in srgb, var(--accent-soft) 20%, var(--surface))
   );
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   padding: var(--space-md);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -95,7 +95,7 @@
   padding: 0.85rem 1rem;
   background: color-mix(in srgb, var(--accent-soft) 16%, var(--surface));
   border: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
 }
 
 .label {

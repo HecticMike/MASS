@@ -12,7 +12,7 @@
   );
   border: 0.75px solid transparent;
   border-top: 0.75px solid transparent;
-  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  border-image: var(--rainbow) 1;
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -33,7 +33,7 @@
   background: var(--glass);
   border: 1.5px solid color-mix(in srgb, var(--accent-tertiary) 35%, var(--border));
   border-radius: var(--radius-lg);
-  padding: var(--space-xs) 0.75rem var(--space-sm);
+  padding: var(--space-xs) 0.9rem var(--space-sm);
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -52,7 +52,7 @@
 }
 
 .radioButton {
-  padding: 0.55rem 0.95rem;
+  padding: 0.5rem 0.8rem;
   border: 1.5px solid color-mix(in srgb, var(--accent) 18%, var(--border));
   background: var(--glass);
   font-weight: 700;
@@ -82,7 +82,7 @@
 
 .buttonSecondary {
   background: transparent;
-  border: 1.5px solid color-mix(in srgb, var(--accent-secondary) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-secondary) 55%, transparent);
   color: inherit;
 }
 
@@ -94,6 +94,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  width: 100%;
 }
 
 .checkbox {
@@ -105,7 +106,7 @@
   text-transform: uppercase;
   background: transparent;
   border: none;
-  padding: 0.2rem 0.2rem 0.2rem 0;
+  padding: 0.4rem 0.2rem 0.4rem 0;
   border-radius: var(--radius-sm);
   width: 100%;
 }

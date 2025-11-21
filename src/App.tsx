@@ -73,7 +73,6 @@ const Layout = () => {
               <span className={styles.brand} aria-label="MASS">
                 mass
               </span>
-              <span className={styles.brandBadge}>Personal weight lab</span>
             </div>
             <p className={styles.routeTitle}>{title}</p>
           </div>
