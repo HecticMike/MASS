@@ -1,10 +1,12 @@
 import { Navigate, NavLink, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import styles from './App.module.css'
 import { MassProvider } from './context/MassContext'
+import { ThemeProvider } from './context/ThemeContext'
 import Dashboard from './pages/Dashboard'
 import LogEntry from './pages/LogEntry'
 import Onboarding from './pages/Onboarding'
 import Settings from './pages/Settings'
+import ThemeToggle from './components/ThemeToggle'
 
 const routeTitles: Record<string, string> = {
   '/dashboard': 'Dashboard',
@@ -19,22 +21,9 @@ const Layout = () => {
 
   return (
     <div className={styles.layout}>
-      <header className={styles.header}>
-        <div className={styles.brandGroup}>
-          <div className={styles.brandRow}>
-            <span className={styles.brand} aria-label="MASS">
-              mass
-            </span>
-          </div>
-          <span className={styles.routeTitle}>{title}</span>
-        </div>
-      </header>
-
-      <main className={styles.main}>
-        <div className={styles.content}>
-          <Outlet />
-        </div>
-      </main>
+      <div className="backdrop-grid" aria-hidden />
+      <div className="backdrop-rings" aria-hidden />
+      <div className="backdrop-glow" aria-hidden />
 
       <nav className={styles.nav} aria-label="Primary navigation">
         <NavLink
@@ -76,26 +65,56 @@ const Layout = () => {
           <span className={styles.navLabel}>Profile</span>
         </NavLink>
       </nav>
+
+      <div className={styles.contentPane}>
+        <header className={styles.header}>
+          <div className={styles.brandGroup}>
+            <div className={styles.brandRow}>
+              <span className={styles.brand} aria-label="MASS">
+                mass
+              </span>
+              <span className={styles.brandBadge}>Personal weight lab</span>
+            </div>
+            <p className={styles.routeTitle}>{title}</p>
+          </div>
+
+          <div className={styles.headerActions}>
+            <div className={styles.routeChip}>
+              <span className={styles.routeDot} aria-hidden="true" />
+              <span className={styles.routeLabel}>{title}</span>
+            </div>
+            <ThemeToggle />
+          </div>
+        </header>
+
+        <main className={styles.main}>
+          <div className={styles.content}>
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   )
 }
 
 function App() {
   return (
-    <MassProvider>
-      <div className={styles.appShell}>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/log" element={<LogEntry />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/settings" element={<Settings />} />
-          </Route>
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </div>
-    </MassProvider>
+    <ThemeProvider>
+      <MassProvider>
+        <div className={styles.appShell}>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/log" element={<LogEntry />} />
+              <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </div>
+      </MassProvider>
+    </ThemeProvider>
   )
 }
 

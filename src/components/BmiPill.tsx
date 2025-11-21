@@ -84,14 +84,15 @@ const BmiPill = ({ heightCm, weightKg, sex = 'male', dob }: BodyFatProps) => {
         {BODY_FAT_TABLE.map((item) => {
           const key = sex === 'female' ? 'female' : 'male'
           const range = item[key]
-          const displayMax = range.max === Number.POSITIVE_INFINITY ? '∞' : range.max
+          const rangeText =
+            range.max === Number.POSITIVE_INFINITY ? `${range.min}+%` : `${range.min}-${range.max}%`
           return (
             <li key={item.label} className={styles.legendItem}>
               <span className={styles.legendSwatch} style={{ background: item.color }} />
               <div className={styles.legendTextGroup}>
                 <span className={styles.legendText}>{item.label}</span>
                 <span className={styles.legendRange}>
-                  {sex === 'male' ? 'Men' : 'Women'} {range.min}–{displayMax}%
+                  {sex === 'male' ? 'Men' : 'Women'} {rangeText}
                 </span>
               </div>
             </li>

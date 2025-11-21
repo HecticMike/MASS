@@ -5,14 +5,18 @@
 }
 
 .card {
-  background: linear-gradient(180deg, rgba(15, 143, 255, 0.05), rgba(255, 255, 255, 0.98));
-  border: 1.5px solid color-mix(in srgb, var(--accent-tertiary) 30%, var(--border));
-  border-top: 3px solid color-mix(in srgb, var(--accent-tertiary) 55%, #ffffff);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 14%, var(--surface)),
+    color-mix(in srgb, var(--accent-tertiary) 14%, var(--surface))
+  );
+  border: 0.75px solid transparent;
+  border-top: 0.75px solid transparent;
+  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-md);
-  border-radius: var(--radius-lg);
 }
 
 .form {
@@ -26,7 +30,7 @@
 }
 
 .checkboxPanel {
-  background: var(--surface);
+  background: var(--glass);
   border: 1.5px solid color-mix(in srgb, var(--accent-tertiary) 35%, var(--border));
   border-radius: var(--radius-lg);
   padding: var(--space-xs) 0.75rem var(--space-sm);
@@ -50,17 +54,19 @@
 .radioButton {
   padding: 0.55rem 0.95rem;
   border: 1.5px solid color-mix(in srgb, var(--accent) 18%, var(--border));
-  background: var(--surface);
-  font-weight: 600;
+  background: var(--glass);
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border-radius: var(--radius-md);
+  box-shadow: 0 8px 18px rgba(12, 18, 38, 0.08);
 }
 
 .radioActive {
-  background: color-mix(in srgb, var(--accent) 18%, #ffffff);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, var(--glass)), color-mix(in srgb, var(--accent-tertiary) 14%, var(--glass)));
   color: var(--fg);
   border-color: var(--accent);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.14);
 }
 
 .inlineInputs {
@@ -132,7 +138,7 @@
 
 .info {
   font-size: 0.85rem;
-  color: var(--fg);
+  color: var(--ink-muted);
 }
 
 .danger {
@@ -151,5 +157,5 @@
   display: grid;
   gap: 0.35rem;
   font-size: 0.9rem;
-  color: var(--fg);
+  color: var(--ink-muted);
 }

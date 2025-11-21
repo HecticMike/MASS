@@ -5,14 +5,17 @@
 }
 
 .intro {
-  background: linear-gradient(135deg, rgba(15, 143, 255, 0.1), rgba(57, 199, 127, 0.08)),
-    var(--surface);
-  border: 1.5px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 12%, var(--surface)),
+    color-mix(in srgb, var(--accent-tertiary) 16%, var(--surface))
+  );
+  border: 0.75px solid transparent;
+  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-sm);
-  border-radius: var(--radius-lg);
 }
 
 .introTitle {
@@ -23,18 +26,18 @@
 
 .introCopy {
   margin: 0;
-  color: var(--fg);
-  font-size: 0.95rem;
+  color: var(--ink-muted);
+  font-size: 1rem;
 }
 
 .form {
   display: grid;
   gap: var(--space-md);
   padding: var(--space-lg);
-  border: 1.5px solid color-mix(in srgb, var(--accent) 12%, var(--border));
-  background: linear-gradient(180deg, rgba(15, 143, 255, 0.05), rgba(255, 255, 255, 0.98));
+  border: 0.75px solid transparent;
+  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  background: color-mix(in srgb, var(--accent-soft) 18%, var(--surface));
   box-shadow: var(--shadow-soft);
-  border-radius: var(--radius-lg);
 }
 
 .field {
@@ -50,20 +53,22 @@
 
 .optionButton {
   border: 1.5px solid color-mix(in srgb, var(--accent) 18%, var(--border));
-  background: var(--surface-muted);
+  background: var(--glass);
   padding: 0.9rem 1rem;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   border-radius: var(--radius-md);
+  box-shadow: 0 8px 20px rgba(12, 18, 38, 0.08);
 }
 
 .optionButtonActive {
-  background: linear-gradient(135deg, rgba(15, 143, 255, 0.12), rgba(57, 199, 127, 0.12));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, var(--glass)), color-mix(in srgb, var(--accent-tertiary) 16%, var(--glass)));
   color: var(--fg);
   border-color: var(--accent);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.14);
 }
 
 .labelRow {

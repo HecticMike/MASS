@@ -12,19 +12,25 @@
 }
 
 .card {
-  background: linear-gradient(180deg, rgba(255, 205, 85, 0.12), rgba(255, 255, 255, 0.96));
-  border: 1.5px solid color-mix(in srgb, var(--accent-secondary) 35%, var(--border));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 14%, var(--surface)),
+    color-mix(in srgb, var(--accent-soft) 18%, var(--surface))
+  );
+  border: 0.75px solid transparent;
+  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
   padding: var(--space-lg);
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-md);
-  border-radius: var(--radius-lg);
   width: 100%;
   max-width: 100%;
   justify-self: stretch;
   box-sizing: border-box;
   flex: 1;
   min-width: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .form {
@@ -41,16 +47,16 @@
   margin: 0;
   font-size: clamp(1.3rem, 5vw, 1.7rem);
   font-weight: 700;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
   color: var(--fg);
 }
 
 .moment {
   margin: 0;
   font-size: 0.9rem;
-  color: var(--fg);
+  color: var(--ink-muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
 }
 
 .field {
@@ -104,13 +110,14 @@
 .historyItem {
   display: grid;
   gap: 0.35rem;
-  padding: 0.85rem 1rem;
-  border: 1.5px solid color-mix(in srgb, var(--accent-tertiary) 25%, var(--border));
-  background: linear-gradient(180deg, rgba(57, 199, 127, 0.08), rgba(255, 255, 255, 0.95));
-  box-shadow: 0 12px 25px rgba(12, 24, 41, 0.05);
-  border-radius: var(--radius-md);
+  padding: 0.95rem 1.1rem;
+  border: 0.75px solid transparent;
+  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
+  background: color-mix(in srgb, var(--accent-tertiary) 12%, var(--surface));
+  box-shadow: none;
   width: 100%;
   min-width: 0;
+  position: relative;
 }
 
 .historyRow {
@@ -121,22 +128,22 @@
 
 .historyPrimary {
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--fg);
 }
 
 .historySecondary {
   font-size: 0.8rem;
-  color: var(--fg);
-  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  letter-spacing: 0.06em;
 }
 
 .emptyState {
-  border: 1.5px dashed color-mix(in srgb, var(--accent-tertiary) 45%, transparent);
+  border: 0.75px dashed var(--stroke);
   padding: var(--space-md);
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--fg);
-  background: #fff;
-  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  box-shadow: none;
 }

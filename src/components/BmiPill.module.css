@@ -1,11 +1,16 @@
 .pill {
-  background: var(--surface);
-  border: 1.5px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-soft) 18%, var(--surface)),
+    color-mix(in srgb, var(--accent-tertiary) 12%, var(--surface))
+  );
+  border: 0.75px solid transparent;
+  border-image: linear-gradient(135deg, #ff5c8d 0%, #ffa95c 25%, #5ed8c7 55%, #7a6cff 85%) 1;
   padding: var(--space-md);
   display: grid;
   gap: var(--space-sm);
   box-shadow: var(--shadow-soft);
-  border-radius: var(--radius-lg);
+  position: relative;
 }
 
 .topRow {
@@ -37,9 +42,10 @@
   position: relative;
   display: flex;
   height: 1.35rem;
-  background: var(--surface-muted);
+  background: var(--glass);
   border-radius: var(--radius-pill);
   overflow: hidden;
+  border: 1px solid var(--border);
 }
 
 .segment {
@@ -60,7 +66,7 @@
 
 .rangeText {
   font-size: 0.85rem;
-  color: var(--fg);
+  color: var(--ink-muted);
 }
 
 .legend {
