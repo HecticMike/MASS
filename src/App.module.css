@@ -155,21 +155,7 @@
 }
 
 .routeChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.5rem 0.9rem;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--accent-secondary) 20%, var(--surface)),
-    color-mix(in srgb, var(--accent-tertiary) 12%, var(--surface))
-  );
-  border: 0.75px solid transparent;
-  border-image: var(--rainbow) 1;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 700;
-  font-size: 0.78rem;
+  display: none;
 }
 
 .routeDot {

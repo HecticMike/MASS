@@ -78,10 +78,6 @@ const Layout = () => {
           </div>
 
           <div className={styles.headerActions}>
-            <div className={styles.routeChip}>
-              <span className={styles.routeDot} aria-hidden="true" />
-              <span className={styles.routeLabel}>{title}</span>
-            </div>
             <ThemeToggle />
           </div>
         </header>

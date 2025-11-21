@@ -19,7 +19,7 @@
   );
   border: 0.75px solid transparent;
   border-image: var(--rainbow) 1;
-  padding: var(--space-lg);
+  padding: 1.2rem;
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-md);
@@ -45,7 +45,7 @@
 
 .heading {
   margin: 0;
-  font-size: clamp(1.3rem, 5vw, 1.7rem);
+  font-size: clamp(1.2rem, 4.5vw, 1.5rem);
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -110,7 +110,7 @@
 .historyItem {
   display: grid;
   gap: 0.35rem;
-  padding: 0.95rem 1.1rem;
+  padding: 0.55rem 0.75rem;
   border: 0.75px solid transparent;
   border-image: var(--rainbow) 1;
   background: color-mix(in srgb, var(--accent-tertiary) 12%, var(--surface));
