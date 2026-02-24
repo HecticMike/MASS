@@ -28,10 +28,16 @@ export const BODY_FAT_TABLE = [
     color: '#efb21c',
   },
   {
-    label: 'Overfat / Obese',
-    male: { min: 25, max: Number.POSITIVE_INFINITY },
-    female: { min: 32, max: Number.POSITIVE_INFINITY },
+    label: 'High',
+    male: { min: 25, max: 29 },
+    female: { min: 32, max: 37 },
     color: '#e54848',
+  },
+  {
+    label: 'Very high',
+    male: { min: 30, max: Number.POSITIVE_INFINITY },
+    female: { min: 38, max: Number.POSITIVE_INFINITY },
+    color: '#b42323',
   },
 ] as const
 
