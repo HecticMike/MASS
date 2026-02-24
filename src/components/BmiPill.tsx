@@ -1,9 +1,9 @@
 import type { Sex } from '../types/app'
 import {
-  BODY_FAT_TABLE,
   bodyFatDomain,
   bodyFatPercentage,
   bodyFatSegments,
+  bodyFatTableForAge,
   classifyBodyFat,
   kgToBmi,
 } from '../utils/bmi'
@@ -40,11 +40,18 @@ const BmiPill = ({ heightCm, weightKg, sex = 'male', dob }: BodyFatProps) => {
   }
 
   const percentage = bodyFatPercentage(bmi, age, sex)
-  const category = classifyBodyFat(percentage, sex)
-  const segments = bodyFatSegments(sex)
-  const domain = bodyFatDomain(sex)
+  const category = classifyBodyFat(percentage, sex, age)
+  const segments = bodyFatSegments(sex, age)
+  const dynamicTable = bodyFatTableForAge(age)
+  const domain = bodyFatDomain(sex, age)
   const clamped = Math.min(Math.max(percentage, domain.min), domain.max)
   const markerRatio = (clamped - domain.min) / (domain.max - domain.min)
+  const formatRangeValue = (value: number) => {
+    if (Math.abs(value - Math.round(value)) < 0.05) {
+      return `${Math.round(value)}`
+    }
+    return value.toFixed(1)
+  }
 
   return (
     <div className={styles.pill}>
@@ -77,15 +84,18 @@ const BmiPill = ({ heightCm, weightKg, sex = 'male', dob }: BodyFatProps) => {
       </div>
 
       <p className={styles.rangeText}>
-        Based on Deurenberg's formula ({age} yrs, {sex === 'male' ? 'male' : 'female'}).
+        Based on Deurenberg's formula ({age} yrs, {sex === 'male' ? 'male' : 'female'}), with age-adjusted
+        bands.
       </p>
 
       <ul className={styles.legend} aria-label="Body fat reference">
-        {BODY_FAT_TABLE.map((item) => {
+        {dynamicTable.map((item) => {
           const key = sex === 'female' ? 'female' : 'male'
           const range = item[key]
           const rangeText =
-            range.max === Number.POSITIVE_INFINITY ? `${range.min}+%` : `${range.min}-${range.max}%`
+            range.max === Number.POSITIVE_INFINITY
+              ? `${formatRangeValue(range.min)}+%`
+              : `${formatRangeValue(range.min)}-${formatRangeValue(range.max)}%`
           return (
             <li key={item.label} className={styles.legendItem}>
               <span className={styles.legendSwatch} style={{ background: item.color }} />

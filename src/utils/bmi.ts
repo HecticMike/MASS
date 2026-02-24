@@ -1,6 +1,8 @@
 import type { Sex } from '../types/app'
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max)
+const AGE_REFERENCE = 35
+const DEURENBERG_AGE_FACTOR = 0.23
 
 export const BODY_FAT_TABLE = [
   {
@@ -40,6 +42,11 @@ export const BODY_FAT_TABLE = [
     color: '#b42323',
   },
 ] as const
+
+type Range = {
+  min: number
+  max: number
+}
 
 const FAT_DOMAIN = {
   male: { min: 0, max: 40 },
@@ -92,29 +99,62 @@ export const bodyFatPercentage = (bmi: number, age: number, sex: Sex): number =>
   return clamp(estimate, 2, 55)
 }
 
-export const classifyBodyFat = (value: number, sex: Sex) => {
+const shiftRangeForAge = (range: Range, age: number): Range => {
+  const shift = (age - AGE_REFERENCE) * DEURENBERG_AGE_FACTOR
+  const min = Math.max(0, range.min + shift)
+  if (!Number.isFinite(range.max)) {
+    return { min, max: Number.POSITIVE_INFINITY }
+  }
+  return { min, max: Math.max(min, range.max + shift) }
+}
+
+export const bodyFatTableForAge = (age: number) =>
+  BODY_FAT_TABLE.map((item) => ({
+    ...item,
+    male: shiftRangeForAge(item.male, age),
+    female: shiftRangeForAge(item.female, age),
+  }))
+
+export const classifyBodyFat = (value: number, sex: Sex, age: number) => {
   const safeSex = sex === 'female' ? 'female' : 'male'
+  const table = bodyFatTableForAge(age)
   return (
-    BODY_FAT_TABLE.find((item) => {
+    table.find((item) => {
       const range = item[safeSex]
       return value >= range.min && value <= range.max
-    }) ?? BODY_FAT_TABLE[BODY_FAT_TABLE.length - 1]
+    }) ?? table[table.length - 1]
   )
 }
 
-export const bodyFatSegments = (sex: Sex) => {
+export const bodyFatSegments = (sex: Sex, age: number) => {
   const key = sex === 'female' ? 'female' : 'male'
-  const domain = FAT_DOMAIN[key]
+  const domain = bodyFatDomain(sex, age)
   const maxCap = domain.max
-  return BODY_FAT_TABLE.map((item) => {
+  return bodyFatTableForAge(age).map((item) => {
     const range = item[key]
+    const start = clamp(range.min, domain.min, maxCap)
+    const rangeEnd = Number.isFinite(range.max) ? range.max : maxCap
+    const end = Math.max(start, clamp(rangeEnd, domain.min, maxCap))
     return {
       label: item.label,
       color: item.color,
-      start: range.min,
-      end: Number.isFinite(range.max) ? range.max : maxCap,
+      start,
+      end,
     }
   })
 }
 
-export const bodyFatDomain = (sex: Sex) => FAT_DOMAIN[sex === 'female' ? 'female' : 'male']
+export const bodyFatDomain = (sex: Sex, age?: number) => {
+  const key = sex === 'female' ? 'female' : 'male'
+  const base = FAT_DOMAIN[key]
+  if (!age) {
+    return base
+  }
+  const dynamic = bodyFatTableForAge(age)
+  const lastRange = dynamic[dynamic.length - 1][key]
+  const paddedMax = Math.ceil((lastRange.min + 5) / 5) * 5
+  return {
+    min: base.min,
+    max: Math.max(base.max, paddedMax),
+  }
+}
