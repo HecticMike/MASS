@@ -207,6 +207,7 @@ button:focus-visible {
 input,
 textarea,
 select {
+  display: block;
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -218,6 +219,13 @@ select {
   color: var(--fg);
   font-size: 1rem;
   overflow: hidden;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="date"],
+input[type="datetime-local"] {
+  min-height: 2.6rem;
 }
 
 input:focus,
