@@ -2,6 +2,8 @@
   display: grid;
   gap: var(--space-lg);
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .card {
@@ -17,6 +19,8 @@
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-md);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .form {
@@ -27,6 +31,7 @@
 .field {
   display: grid;
   gap: 0.4rem;
+  min-width: 0;
 }
 
 .checkboxPanel {

@@ -44,7 +44,7 @@ const normalizeEntry = (entry: Partial<Entry> & Record<string, unknown>): Entry 
   }
 }
 
-const normalizeState = (input: unknown): AppState => {
+export const normalizeState = (input: unknown): AppState => {
   if (!input || typeof input !== 'object') {
     return createDefaultState()
   }

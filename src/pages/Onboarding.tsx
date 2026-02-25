@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import type { FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMass } from '../context/MassContext'
 import { ageFromDob, bmiToKg, targetBmiFor } from '../utils/bmi'
@@ -78,7 +78,9 @@ const resolveHeightCmFromForm = (state: OnboardingFormState): number | null => {
 
 const Onboarding = () => {
   const navigate = useNavigate()
-  const { profile, goal, setProfile, setGoal, clearGoal } = useMass()
+  const { profile, goal, setProfile, setGoal, clearGoal, importState } = useMass()
+  const restoreInputRef = useRef<HTMLInputElement>(null)
+  const [restoreMessage, setRestoreMessage] = useState<string | null>(null)
 
   const derivedInitial = useMemo(() => {
     const target = goal?.targetKg
@@ -159,6 +161,29 @@ const Onboarding = () => {
     })
   }
 
+  const handleRestore = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result as string)
+        const result = importState(parsed)
+        if (result.hasProfile) {
+          navigate('/dashboard', { replace: true })
+        } else {
+          setRestoreMessage(`Restored ${result.entries} log(s). Fill in your profile to continue.`)
+        }
+      } catch {
+        setRestoreMessage('Could not read this file. Make sure it is a valid MASS backup.')
+      }
+      if (restoreInputRef.current) {
+        restoreInputRef.current.value = ''
+      }
+    }
+    reader.readAsText(file)
+  }
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -214,6 +239,26 @@ const Onboarding = () => {
         <p className={styles.introCopy}>
           Capture a few basics so your dashboard and logs reflect the right ranges for you.
         </p>
+        <div className={styles.restoreRow}>
+          <p className={styles.introCopy}>Already have a backup?</p>
+          <button
+            type="button"
+            className={styles.secondary}
+            onClick={() => restoreInputRef.current?.click()}
+          >
+            Restore from backup
+          </button>
+          <input
+            ref={restoreInputRef}
+            type="file"
+            accept=".json,application/json"
+            onChange={handleRestore}
+            hidden
+          />
+          {restoreMessage ? (
+            <p className={styles.hint}>{restoreMessage}</p>
+          ) : null}
+        </div>
       </article>
 
       <form className={styles.form} onSubmit={handleSubmit} noValidate>

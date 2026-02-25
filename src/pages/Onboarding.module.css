@@ -2,6 +2,8 @@
   display: grid;
   gap: var(--space-lg);
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .intro {
@@ -30,6 +32,13 @@
   font-size: 1rem;
 }
 
+.restoreRow {
+  display: grid;
+  gap: var(--space-xs);
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-sm);
+}
+
 .form {
   display: grid;
   gap: var(--space-md);
@@ -38,11 +47,14 @@
   border-image: var(--rainbow) 1;
   background: color-mix(in srgb, var(--accent-soft) 18%, var(--surface));
   box-shadow: var(--shadow-soft);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .field {
   display: grid;
   gap: 0.45rem;
+  min-width: 0;
 }
 
 .optionGroup {

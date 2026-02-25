@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import type { FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import { useMass } from '../context/MassContext'
 import styles from './Settings.module.css'
 import { useProfileGuard } from '../hooks/useProfileGuard'
@@ -15,8 +15,9 @@ type ProfileFormState = {
 const sanitizeNumber = (value: string) => Number.parseFloat(value.replace(',', '.'))
 
 const Settings = () => {
-  const { entries, profile, goal, setProfile, setGoal, clearGoal, reset, hydrated } = useMass()
+  const { entries, profile, goal, setProfile, setGoal, clearGoal, importState, reset, hydrated } = useMass()
   const ready = useProfileGuard(profile, hydrated)
+  const restoreInputRef = useRef<HTMLInputElement>(null)
 
   const [profileForm, setProfileForm] = useState<ProfileFormState>({
     sex: 'unspecified',
@@ -214,6 +215,28 @@ const Settings = () => {
     const fileName = selectedUser === 'miguel' ? 'mass-miguel.json' : 'mass-ines.json'
     downloadFile(JSON.stringify(payload, null, 2), fileName, 'application/json')
     setBackupMessage(`Backup downloaded as ${fileName}.`)
+  }
+
+  const handleRestoreBackup = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result as string)
+        const result = importState(parsed)
+        setBackupMessage(
+          `Restored ${result.entries} log(s)${result.hasProfile ? ' and profile' : ''}. `,
+        )
+      } catch {
+        setBackupMessage('Could not read this file. Make sure it is a valid MASS backup.')
+      }
+      // Reset input so the same file can be re-selected
+      if (restoreInputRef.current) {
+        restoreInputRef.current.value = ''
+      }
+    }
+    reader.readAsText(file)
   }
 
   const handleSectionToggle = (section: keyof typeof includeSections) => {
@@ -453,6 +476,20 @@ const Settings = () => {
           <button type="button" className={styles.buttonSecondary} onClick={handleBackupJson}>
             Download backup
           </button>
+          <button
+            type="button"
+            className={styles.buttonSecondary}
+            onClick={() => restoreInputRef.current?.click()}
+          >
+            Restore backup
+          </button>
+          <input
+            ref={restoreInputRef}
+            type="file"
+            accept=".json,application/json"
+            onChange={handleRestoreBackup}
+            hidden
+          />
         </div>
 
         <p className={styles.info}>

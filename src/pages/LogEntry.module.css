@@ -36,6 +36,7 @@
 .form {
   display: grid;
   gap: var(--space-md);
+  min-width: 0;
 }
 
 .summaryRow {
@@ -62,6 +63,7 @@
 .field {
   display: grid;
   gap: 0.4rem;
+  min-width: 0;
 }
 
 .label {

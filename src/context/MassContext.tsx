@@ -10,6 +10,7 @@ import {
 import {
   clearPersistedState,
   loadPersistedState,
+  normalizeState,
   persistState,
   readCachedState,
 } from '../services/persistence'
@@ -35,6 +36,7 @@ type MassContextValue = {
   clearGoal: () => void
   addEntry: (entry: AddEntryInput) => Entry | null
   removeEntry: (entry: Entry) => void
+  importState: (raw: unknown) => { entries: number; hasProfile: boolean }
   reset: () => Promise<void>
 }
 
@@ -146,6 +148,19 @@ export const MassProvider = ({ children }: { children: ReactNode }) => {
     })
   }, [])
 
+  const importState = useCallback((raw: unknown): { entries: number; hasProfile: boolean } => {
+    const imported = normalizeState(raw)
+    const cleaned = {
+      ...imported,
+      entries: sortAndCleanEntries(imported.entries),
+    }
+    setState(cleaned)
+    return {
+      entries: cleaned.entries.length,
+      hasProfile: !!cleaned.profile,
+    }
+  }, [])
+
   const reset = useCallback(async () => {
     setState(createDefaultState())
     await clearPersistedState()
@@ -162,9 +177,10 @@ export const MassProvider = ({ children }: { children: ReactNode }) => {
       clearGoal,
       addEntry,
       removeEntry,
+      importState,
       reset,
     }),
-    [state, hydrated, setProfile, setGoal, clearGoal, addEntry, removeEntry, reset],
+    [state, hydrated, setProfile, setGoal, clearGoal, addEntry, removeEntry, importState, reset],
   )
 
   return <MassContext.Provider value={value}>{children}</MassContext.Provider>
