@@ -286,15 +286,17 @@ const Onboarding = () => {
           <label className={styles.label} htmlFor="dob">
             Date of birth
           </label>
-          <input
-            id="dob"
-            name="dob"
-            type="date"
-            value={form.dob}
-            max={maxDob}
-            onChange={(event) => setForm((state) => ({ ...state, dob: event.target.value }))}
-            required
-          />
+          <div className="date-input-wrap">
+            <input
+              id="dob"
+              name="dob"
+              type="date"
+              value={form.dob}
+              max={maxDob}
+              onChange={(event) => setForm((state) => ({ ...state, dob: event.target.value }))}
+              required
+            />
+          </div>
           <span className={styles.hint}>We use this to tailor BMI guidance for you.</span>
         </div>
 

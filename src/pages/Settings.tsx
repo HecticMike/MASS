@@ -6,7 +6,7 @@ import { useProfileGuard } from '../hooks/useProfileGuard'
 import { formatWeight, kgFromInput } from '../utils/weight'
 
 type ProfileFormState = {
-  sex: 'male' | 'female' | 'unspecified'
+  sex: 'male' | 'female'
   heightCm: string
   unit: 'kg' | 'lb'
   dob: string
@@ -20,7 +20,7 @@ const Settings = () => {
   const restoreInputRef = useRef<HTMLInputElement>(null)
 
   const [profileForm, setProfileForm] = useState<ProfileFormState>({
-    sex: 'unspecified',
+    sex: 'female',
     heightCm: '',
     unit: 'kg',
     dob: '',
@@ -261,16 +261,14 @@ const Settings = () => {
           <div className={styles.field}>
             <span className={styles.label}>Sex</span>
             <div className={styles.radioGroup}>
-              {(['female', 'male', 'unspecified'] as const).map((value) => (
+              {(['female', 'male'] as const).map((value) => (
                 <button
                   key={value}
                   type="button"
                   className={`${styles.radioButton} ${profileForm.sex === value ? styles.radioActive : ''}`}
                   onClick={() => setProfileForm((state) => ({ ...state, sex: value }))}
                 >
-                  {value === 'unspecified'
-                    ? 'Prefer not to say'
-                    : value.charAt(0).toUpperCase() + value.slice(1)}
+                  {value.charAt(0).toUpperCase() + value.slice(1)}
                 </button>
               ))}
             </div>
@@ -296,14 +294,16 @@ const Settings = () => {
             <label className={styles.label} htmlFor="dob">
               Date of birth
             </label>
-            <input
-              id="dob"
-              name="dob"
-              type="date"
-              value={profileForm.dob}
-              max={new Date().toISOString().slice(0, 10)}
-              onChange={(event) => setProfileForm((state) => ({ ...state, dob: event.target.value }))}
-            />
+            <div className="date-input-wrap">
+              <input
+                id="dob"
+                name="dob"
+                type="date"
+                value={profileForm.dob}
+                max={new Date().toISOString().slice(0, 10)}
+                onChange={(event) => setProfileForm((state) => ({ ...state, dob: event.target.value }))}
+              />
+            </div>
           </div>
 
           <div className={styles.field}>
@@ -375,17 +375,19 @@ const Settings = () => {
             <label className={styles.label} htmlFor="startDate">
               Date
             </label>
-            <input
-              id="startDate"
-              name="startDate"
-              type="date"
-              value={startDateValue}
-              max={new Date().toISOString().slice(0, 10)}
-              onChange={(event) => {
-                setStartDateValue(event.target.value)
-                setStartDateMessage(null)
-              }}
-            />
+            <div className="date-input-wrap">
+              <input
+                id="startDate"
+                name="startDate"
+                type="date"
+                value={startDateValue}
+                max={new Date().toISOString().slice(0, 10)}
+                onChange={(event) => {
+                  setStartDateValue(event.target.value)
+                  setStartDateMessage(null)
+                }}
+              />
+            </div>
           </div>
           <div className={styles.field}>
             <label className={styles.label} htmlFor="startWeight">

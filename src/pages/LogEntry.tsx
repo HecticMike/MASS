@@ -132,13 +132,15 @@ const LogEntry = () => {
             <label className={styles.label} htmlFor="timestamp">
               Logged at
             </label>
-            <input
-              id="timestamp"
-              name="timestamp"
-              type="datetime-local"
-              value={dateTime}
-              onChange={(event) => setDateTime(event.target.value)}
-            />
+            <div className="date-input-wrap">
+              <input
+                id="timestamp"
+                name="timestamp"
+                type="datetime-local"
+                value={dateTime}
+                onChange={(event) => setDateTime(event.target.value)}
+              />
+            </div>
           </div>
 
           <div className={styles.field}>

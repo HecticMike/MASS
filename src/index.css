@@ -224,8 +224,19 @@ select {
 }
 
 input[type="date"],
-input[type="datetime-local"] {
+input[type="datetime-local"],
+input[type="time"] {
   min-height: 2.6rem;
+}
+
+/* Wrapper for date/datetime inputs — needed because Safari disables
+   overflow:hidden on elements with border-image, so clipping must
+   happen on a separate ancestor without border-image. */
+.date-input-wrap {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 input:focus,
