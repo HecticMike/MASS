@@ -72,9 +72,6 @@
   color: var(--fg);
 }
 
-.datetime {
-  font-size: 0.95rem;
-}
 
 .feedback {
   margin: 0;

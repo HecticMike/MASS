@@ -51,7 +51,7 @@ const Dashboard = () => {
   const summary = summarizeProgress(entries, goal)
   const hasData = summary.latestKg !== null
   const resolvedSex = profile.sex === 'female' ? 'female' : 'male'
-  const weeklyForecasts = forecastWeeklyWeights(entries)
+  const forecastResult = forecastWeeklyWeights(entries)
 
   const toggleDeurenberg = () => {
     setDeurenbergVisible((prev) => {
@@ -133,14 +133,16 @@ const Dashboard = () => {
         </div>
       )}
 
-      {weeklyForecasts && weeklyForecasts.length > 0 ? (
+      {forecastResult ? (
         <article className={`${styles.card} ${styles.prediction}`}>
           <div className={styles.predictionHeader}>
             <span className={styles.label}>Next month outlook</span>
-            <span className={styles.predictionBadge}>Exponential</span>
+            <span className={styles.predictionBadge}>
+              {forecastResult.model === 'exponential' ? 'Exponential' : 'Linear'}
+            </span>
           </div>
           <ul className={styles.predictionList}>
-            {weeklyForecasts.map((forecast, index) => (
+            {forecastResult.forecasts.map((forecast, index) => (
               <li key={forecast.date} className={styles.predictionRow}>
                 <span>Week {index + 1}</span>
                 <span>{format(forecast.date)}</span>
@@ -149,7 +151,9 @@ const Dashboard = () => {
             ))}
           </ul>
           <p className={styles.predictionCopy}>
-            Projection uses a slowing (exponential) trend, so losses taper as you near a plateau.
+            {forecastResult.model === 'exponential'
+              ? 'Projection uses a slowing (exponential) trend, so losses taper as you near a plateau.'
+              : 'Projection uses a weighted linear trend based on your recent data.'}
           </p>
         </article>
       ) : null}

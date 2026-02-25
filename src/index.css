@@ -208,12 +208,14 @@ input,
 textarea,
 select {
   width: 100%;
+  min-width: 0;
   padding: 0.7rem 0.85rem;
   border-radius: var(--radius-md);
   border: 0.75px solid var(--stroke);
   background: var(--surface);
   transition: border-color 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
   color: var(--fg);
+  font-size: 1rem;
 }
 
 input:focus,

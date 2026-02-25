@@ -108,7 +108,7 @@ const LogEntry = () => {
       <article className={styles.card}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.summaryRow}>
-            <h2 className={styles.heading}>Morning check-in</h2>
+            <h2 className={styles.heading}>Log</h2>
             <p className={styles.moment}>{summary || 'Choose a time'}</p>
           </div>
 
@@ -138,7 +138,6 @@ const LogEntry = () => {
               type="datetime-local"
               value={dateTime}
               onChange={(event) => setDateTime(event.target.value)}
-              className={styles.datetime}
             />
           </div>
 

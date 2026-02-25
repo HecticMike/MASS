@@ -182,45 +182,89 @@ type ExponentialFit = {
   r2: number
 }
 
-const fitExponential = (entries: Array<{ ts: string; kg: number }>): ExponentialFit | null => {
-  const points = entries
-    .filter((entry) => entry && typeof entry.ts === 'string' && typeof entry.kg === 'number')
+/**
+ * Select recent entries for forecasting.
+ * Uses a 45-day window, extending to 90 days if too few points.
+ */
+const selectRecentEntries = (
+  sorted: Array<{ ts: string; kg: number }>,
+  windowDays = 45,
+  extendedDays = 90,
+  minPoints = 6,
+): Array<{ ts: string; kg: number }> => {
+  const latestMs = new Date(sorted[sorted.length - 1]!.ts).getTime()
+  const cutoff = latestMs - windowDays * MS_PER_DAY
+  let recent = sorted.filter((e) => new Date(e.ts).getTime() >= cutoff)
+  if (recent.length < minPoints) {
+    const extCutoff = latestMs - extendedDays * MS_PER_DAY
+    recent = sorted.filter((e) => new Date(e.ts).getTime() >= extCutoff)
+  }
+  if (recent.length < minPoints) {
+    recent = sorted.slice(-Math.min(sorted.length, minPoints * 3))
+  }
+  return recent
+}
+
+/**
+ * Collapse multiple weigh-ins per calendar day into a single average.
+ */
+const dailyAverage = (
+  entries: Array<{ ts: string; kg: number }>,
+): Array<{ ts: string; kg: number }> => {
+  const buckets = new Map<string, { sum: number; count: number; ts: string }>()
+  for (const entry of entries) {
+    const day = entry.ts.slice(0, 10)
+    const existing = buckets.get(day)
+    if (existing) {
+      existing.sum += entry.kg
+      existing.count += 1
+    } else {
+      buckets.set(day, { sum: entry.kg, count: 1, ts: entry.ts })
+    }
+  }
+  return Array.from(buckets.values())
+    .map((b) => ({ ts: b.ts, kg: b.sum / b.count }))
     .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime())
-  if (points.length < 4) {
+}
+
+const fitExponential = (
+  entries: Array<{ ts: string; kg: number }>,
+): ExponentialFit | null => {
+  const averaged = dailyAverage(entries)
+  if (averaged.length < 5) {
     return null
   }
 
-  const baseTime = new Date(points[0]!.ts).getTime()
-  const xs = points.map((entry, index) => {
-    const time = new Date(entry.ts).getTime()
-    return (time - baseTime) / MS_PER_DAY + index * 1e-6
-  })
-  const ys = points.map((entry) => entry.kg)
-  const w0 = ys[0]!
+  const baseTime = new Date(averaged[0]!.ts).getTime()
+  const xs = averaged.map((e) => (new Date(e.ts).getTime() - baseTime) / MS_PER_DAY)
+  const ys = averaged.map((e) => e.kg)
   const minY = Math.min(...ys)
+  const maxY = Math.max(...ys)
+  const range = maxY - minY
+
+  if (range < 0.4) {
+    return null
+  }
 
   const floors: number[] = []
-  const lower = minY - 2
-  const upper = minY - 0.3
+  const lower = minY - Math.max(range * 2, 6)
+  const upper = minY - 0.2
   if (upper <= lower) {
     return null
   }
-  const steps = 40
+  const steps = 50
   for (let i = 0; i <= steps; i += 1) {
     floors.push(lower + ((upper - lower) * i) / steps)
   }
 
-  const meanY = ys.reduce((acc, value) => acc + value, 0) / ys.length
-  const sst = ys.reduce((acc, value) => acc + (value - meanY) ** 2, 0) || 1
+  const meanY = ys.reduce((acc, v) => acc + v, 0) / ys.length
+  const sst = ys.reduce((acc, v) => acc + (v - meanY) ** 2, 0) || 1
 
   let best: ExponentialFit | null = null
   let bestR2 = 0
 
   for (const floor of floors) {
-    if (w0 <= floor + 0.2) {
-      continue
-    }
-    if (ys.some((value) => value <= floor + 0.05)) {
+    if (ys.some((v) => v <= floor + 0.01)) {
       continue
     }
 
@@ -244,26 +288,68 @@ const fitExponential = (entries: Array<{ ts: string; kg: number }>): Exponential
     }
     const k = -regression.slope
     const predictions = xs.map((x) => floor + Math.exp(regression.intercept - k * x))
-    const sse = ys.reduce((acc, value, index) => acc + (value - predictions[index]!) ** 2, 0)
+    const sse = ys.reduce((acc, v, i) => acc + (v - predictions[i]!) ** 2, 0)
     const r2 = 1 - sse / sst
     if (r2 > bestR2 && Number.isFinite(r2)) {
       bestR2 = r2
-      best = {
-        floor,
-        intercept: regression.intercept,
-        k,
-        baseTime,
-        r2,
-      }
+      best = { floor, intercept: regression.intercept, k, baseTime, r2 }
     }
   }
 
-  if (!best || best.r2 < 0.55) {
+  if (!best || best.r2 < 0.65) {
     return null
   }
-
   return best
 }
+
+/**
+ * Recency-weighted linear regression — recent points matter more.
+ * halfLife is in the same unit as x (days).
+ */
+const weightedLinearRegression = (
+  x: number[],
+  y: number[],
+  halfLife = 21,
+) => {
+  const n = x.length
+  if (n < 2) return null
+  const maxX = x[n - 1]!
+  const lambda = Math.LN2 / halfLife
+
+  let wS = 0
+  let wX = 0
+  let wY = 0
+  let wXY = 0
+  let wX2 = 0
+
+  for (let i = 0; i < n; i++) {
+    const w = Math.exp(-lambda * (maxX - x[i]!))
+    wS += w
+    wX += w * x[i]!
+    wY += w * y[i]!
+    wXY += w * x[i]! * y[i]!
+    wX2 += w * x[i]! * x[i]!
+  }
+
+  const denom = wS * wX2 - wX * wX
+  if (denom === 0) return null
+  const slope = (wS * wXY - wX * wY) / denom
+  const intercept = (wY - slope * wX) / wS
+
+  const wMeanY = wY / wS
+  let sst = 0
+  let sse = 0
+  for (let i = 0; i < n; i++) {
+    const w = Math.exp(-lambda * (maxX - x[i]!))
+    sst += w * (y[i]! - wMeanY) ** 2
+    sse += w * (y[i]! - (intercept + slope * x[i]!)) ** 2
+  }
+  const r2 = sst > 0 ? 1 - sse / sst : 0
+
+  return { slope, intercept, r2 }
+}
+
+export type ForecastModel = 'exponential' | 'linear'
 
 export type WeeklyForecast = {
   date: string
@@ -271,58 +357,74 @@ export type WeeklyForecast = {
   dayOffset: number
 }
 
+export type ForecastResult = {
+  model: ForecastModel
+  r2: number
+  forecasts: WeeklyForecast[]
+}
+
 export const forecastWeeklyWeights = (
   entries: Array<{ ts: string; kg: number }>,
   weeks = 4,
-): WeeklyForecast[] | null => {
-  const points = entries
-    .filter((entry) => entry && typeof entry.ts === 'string' && typeof entry.kg === 'number')
+): ForecastResult | null => {
+  const sorted = entries
+    .filter((e) => e && typeof e.ts === 'string' && typeof e.kg === 'number')
     .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime())
-  if (points.length < 2) {
+  if (sorted.length < 3) {
     return null
   }
-  const latestKg = points[points.length - 1]!.kg
 
-  const clampPrediction = (value: number) => {
-    const min = latestKg - 2.5
-    const max = latestKg + 1.5
-    return Math.max(min, Math.min(max, value))
+  const recent = selectRecentEntries(sorted)
+  const latestKg = sorted[sorted.length - 1]!.kg
+  const lastTime = new Date(sorted[sorted.length - 1]!.ts).getTime()
+
+  // Adaptive clamp based on recent data range
+  const recentKgs = recent.map((e) => e.kg)
+  const recentRange = Math.max(...recentKgs) - Math.min(...recentKgs)
+  const maxWeeklyDelta = Math.max(recentRange / 2, 0.8)
+  const clamp = (value: number, week: number) => {
+    const maxDrift = maxWeeklyDelta * week
+    return Math.max(latestKg - maxDrift, Math.min(latestKg + maxDrift, value))
   }
-  const fit = fitExponential(points)
+
+  // 1. Try exponential fit on the recent window
+  const fit = fitExponential(recent)
   if (fit) {
-    const lastTime = new Date(points[points.length - 1]!.ts).getTime()
     const lastT = (lastTime - fit.baseTime) / MS_PER_DAY
     const forecasts: WeeklyForecast[] = []
-    for (let week = 1; week <= weeks; week += 1) {
-      const dayOffset = week * 7
+    for (let w = 1; w <= weeks; w += 1) {
+      const dayOffset = w * 7
       const t = lastT + dayOffset
-      const kg = clampPrediction(fit.floor + Math.exp(fit.intercept - fit.k * t))
+      const kg = clamp(fit.floor + Math.exp(fit.intercept - fit.k * t), w)
       const date = new Date(lastTime + dayOffset * MS_PER_DAY).toISOString()
       forecasts.push({ date, kg, dayOffset })
     }
-    return forecasts
+    return { model: 'exponential', r2: fit.r2, forecasts }
   }
 
-  const baseTime = new Date(points[0]!.ts).getTime()
-  const xs = points.map((entry, index) => {
-    const time = new Date(entry.ts).getTime()
-    return (time - baseTime) / MS_PER_DAY + index * 1e-6
-  })
-  const ys = points.map((entry) => entry.kg)
-  const regression = linearRegression(xs, ys)
+  // 2. Fall back to recency-weighted linear regression
+  const averaged = dailyAverage(recent)
+  if (averaged.length < 2) {
+    return null
+  }
+  const baseTime = new Date(averaged[0]!.ts).getTime()
+  const xs = averaged.map((e) => (new Date(e.ts).getTime() - baseTime) / MS_PER_DAY)
+  const ys = averaged.map((e) => e.kg)
+  const regression = weightedLinearRegression(xs, ys)
   if (!regression) {
     return null
   }
-  const limitedSlope = Math.max(-0.2, Math.min(0.2, regression.slope))
-  const lastTime = new Date(points[points.length - 1]!.ts).getTime()
-  const lastX = xs[xs.length - 1]!
+
+  // Cap slope at ±0.15 kg/day (~1 kg/week)
+  const limitedSlope = Math.max(-0.15, Math.min(0.15, regression.slope))
+  const lastX = (lastTime - baseTime) / MS_PER_DAY
   const forecasts: WeeklyForecast[] = []
-  for (let week = 1; week <= weeks; week += 1) {
-    const dayOffset = week * 7
+  for (let w = 1; w <= weeks; w += 1) {
+    const dayOffset = w * 7
     const futureX = lastX + dayOffset
-    const kg = clampPrediction(regression.intercept + limitedSlope * futureX)
+    const kg = clamp(regression.intercept + limitedSlope * futureX, w)
     const date = new Date(lastTime + dayOffset * MS_PER_DAY).toISOString()
     forecasts.push({ date, kg, dayOffset })
   }
-  return forecasts
+  return { model: 'linear', r2: regression.r2, forecasts }
 }
