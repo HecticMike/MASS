@@ -118,6 +118,28 @@
   color: var(--success);
 }
 
+.bmiPillWrapper {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.deurenbergToggle {
+  background: transparent;
+  border: none;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.deurenbergToggle:hover {
+  color: var(--fg);
+}
+
 .placeholder {
   border: 0.75px dashed var(--stroke);
   padding: var(--space-md);

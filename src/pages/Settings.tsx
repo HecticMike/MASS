@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useMass } from '../context/MassContext'
 import styles from './Settings.module.css'
 import { useProfileGuard } from '../hooks/useProfileGuard'
+import { formatWeight, kgFromInput } from '../utils/weight'
 
 type ProfileFormState = {
   sex: 'male' | 'female' | 'unspecified'
   heightCm: string
   unit: 'kg' | 'lb'
+  dob: string
 }
 
 const sanitizeNumber = (value: string) => Number.parseFloat(value.replace(',', '.'))
@@ -20,6 +22,7 @@ const Settings = () => {
     sex: 'unspecified',
     heightCm: '',
     unit: 'kg',
+    dob: '',
   })
   const [profileError, setProfileError] = useState<string | null>(null)
   const [goalValue, setGoalValue] = useState('')
@@ -31,6 +34,10 @@ const Settings = () => {
     entries: true,
   })
   const [backupMessage, setBackupMessage] = useState<string | null>(null)
+  const [startDateValue, setStartDateValue] = useState('')
+  const [startWeightValue, setStartWeightValue] = useState('')
+  const [startDateError, setStartDateError] = useState<string | null>(null)
+  const [startDateMessage, setStartDateMessage] = useState<string | null>(null)
 
   useEffect(() => {
     if (profile) {
@@ -38,6 +45,7 @@ const Settings = () => {
         sex: profile.sex,
         heightCm: profile.height_cm ? String(profile.height_cm) : '',
         unit: profile.unit,
+        dob: profile.dob ?? '',
       })
     }
   }, [profile])
@@ -46,8 +54,70 @@ const Settings = () => {
     setGoalValue(goal && typeof goal.targetKg === 'number' ? goal.targetKg.toFixed(1) : '')
   }, [goal])
 
+  // Sync start date fields from goal when it changes
+  useEffect(() => {
+    if (goal?.startDate) {
+      setStartDateValue(goal.startDate.slice(0, 10))
+    }
+    if (goal?.startKg !== undefined && profile) {
+      setStartWeightValue(String(goal.startKg))
+    }
+  }, [goal, profile])
+
+  // Find the closest entry to the selected start date to suggest a weight
+  const entryOnStartDate = useMemo(() => {
+    if (!startDateValue || !entries.length) return null
+    const targetMs = new Date(startDateValue).getTime()
+    if (Number.isNaN(targetMs)) return null
+    let closest = entries[0]
+    let closestDiff = Math.abs(new Date(entries[0].ts).getTime() - targetMs)
+    for (const entry of entries) {
+      const diff = Math.abs(new Date(entry.ts).getTime() - targetMs)
+      if (diff < closestDiff) {
+        closestDiff = diff
+        closest = entry
+      }
+    }
+    // Only suggest if the closest entry is within 3 days
+    return closestDiff <= 3 * 24 * 60 * 60 * 1000 ? closest : null
+  }, [startDateValue, entries])
+
   if (!ready || !profile) {
     return null
+  }
+
+  const handleStartDateSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!startDateValue) {
+      setStartDateError('Please select a date.')
+      return
+    }
+    const selectedDate = new Date(startDateValue)
+    if (Number.isNaN(selectedDate.getTime()) || selectedDate > new Date()) {
+      setStartDateError('Start date must be in the past.')
+      return
+    }
+
+    let resolvedKg: number | undefined
+    if (startWeightValue.trim()) {
+      const parsed = sanitizeNumber(startWeightValue)
+      if (!Number.isFinite(parsed) || parsed <= 0) {
+        setStartDateError('Weight must be a positive number.')
+        return
+      }
+      resolvedKg = kgFromInput(parsed, profile.unit)
+    } else if (entryOnStartDate) {
+      resolvedKg = entryOnStartDate.kg
+    }
+
+    setGoal({
+      targetKg: goal?.targetKg,
+      startDate: selectedDate.toISOString(),
+      startKg: resolvedKg,
+    })
+    setStartDateError(null)
+    setStartDateMessage('Start date updated.')
+    setTimeout(() => setStartDateMessage(null), 3000)
   }
 
   const handleProfileSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -61,6 +131,7 @@ const Settings = () => {
       sex: profileForm.sex,
       height_cm: height,
       unit: profileForm.unit,
+      dob: profileForm.dob || undefined,
     })
     setProfileError(null)
   }
@@ -199,6 +270,20 @@ const Settings = () => {
           </div>
 
           <div className={styles.field}>
+            <label className={styles.label} htmlFor="dob">
+              Date of birth
+            </label>
+            <input
+              id="dob"
+              name="dob"
+              type="date"
+              value={profileForm.dob}
+              max={new Date().toISOString().slice(0, 10)}
+              onChange={(event) => setProfileForm((state) => ({ ...state, dob: event.target.value }))}
+            />
+          </div>
+
+          <div className={styles.field}>
             <span className={styles.label}>Preferred unit</span>
             <div className={styles.radioGroup}>
               {(['kg', 'lb'] as const).map((value) => (
@@ -253,6 +338,63 @@ const Settings = () => {
             <button type="button" className={styles.buttonSecondary} onClick={handleClearGoal}>
               Clear goal
             </button>
+          </div>
+        </form>
+      </article>
+
+      <article className={styles.card}>
+        <h3 className={styles.sectionTitle}>Start date</h3>
+        <p className={styles.info}>
+          Override when your progress tracking begins. Pick any past date — if you have a log on or near that day, its weight will be pre-filled.
+        </p>
+        <form className={styles.form} onSubmit={handleStartDateSubmit}>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="startDate">
+              Date
+            </label>
+            <input
+              id="startDate"
+              name="startDate"
+              type="date"
+              value={startDateValue}
+              max={new Date().toISOString().slice(0, 10)}
+              onChange={(event) => {
+                setStartDateValue(event.target.value)
+                setStartDateMessage(null)
+              }}
+            />
+          </div>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="startWeight">
+              Starting weight ({profile.unit})
+            </label>
+            <input
+              id="startWeight"
+              name="startWeight"
+              inputMode="decimal"
+              step="0.1"
+              value={startWeightValue}
+              onChange={(event) => setStartWeightValue(event.target.value)}
+              placeholder={
+                entryOnStartDate
+                  ? `Log on this date: ${formatWeight(entryOnStartDate.kg, profile.unit)}`
+                  : 'e.g. 80.0'
+              }
+            />
+            {entryOnStartDate && !startWeightValue ? (
+              <p className={styles.info}>
+                Using log from {new Date(entryOnStartDate.ts).toLocaleDateString()}: {formatWeight(entryOnStartDate.kg, profile.unit)}
+              </p>
+            ) : null}
+          </div>
+          {startDateError ? (
+            <p className={styles.infoError}>{startDateError}</p>
+          ) : null}
+          {startDateMessage ? (
+            <p className={styles.infoSuccess}>{startDateMessage}</p>
+          ) : null}
+          <div className={styles.controls}>
+            <button type="submit">Save start date</button>
           </div>
         </form>
       </article>

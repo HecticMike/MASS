@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import BmiPill from '../components/BmiPill'
 import TrendsChart from '../components/TrendsChart'
 import { useMass } from '../context/MassContext'
@@ -7,6 +8,17 @@ import { formatWeight, fromKg, roundTo } from '../utils/weight'
 import { summarizeProgress } from '../utils/progress'
 import { useProfileGuard } from '../hooks/useProfileGuard'
 import { forecastWeeklyWeights } from '../utils/trend'
+
+const DEURENBERG_VISIBLE_KEY = 'mass-deurenberg-visible'
+
+const readDeurenbergVisible = (): boolean => {
+  try {
+    const stored = window.localStorage.getItem(DEURENBERG_VISIBLE_KEY)
+    return stored === null ? true : stored !== 'false'
+  } catch {
+    return true
+  }
+}
 
 const formatChange = (delta: number | null, unit: 'kg' | 'lb') => {
   if (delta === null) {
@@ -29,6 +41,7 @@ const changeClass = (delta: number | null) => {
 const Dashboard = () => {
   const { entries, profile, goal, hydrated } = useMass()
   const ready = useProfileGuard(profile, hydrated)
+  const [deurenbergVisible, setDeurenbergVisible] = useState<boolean>(readDeurenbergVisible)
 
   if (!ready || !profile) {
     return null
@@ -40,15 +53,37 @@ const Dashboard = () => {
   const resolvedSex = profile.sex === 'female' ? 'female' : 'male'
   const weeklyForecasts = forecastWeeklyWeights(entries)
 
+  const toggleDeurenberg = () => {
+    setDeurenbergVisible((prev) => {
+      const next = !prev
+      try {
+        window.localStorage.setItem(DEURENBERG_VISIBLE_KEY, String(next))
+      } catch {}
+      return next
+    })
+  }
+
   return (
     <section className={styles.container}>
       {hasData ? (
-        <BmiPill
-          heightCm={profile.height_cm}
-          weightKg={summary.latestKg!}
-          sex={resolvedSex}
-          dob={profile.dob}
-        />
+        <div className={styles.bmiPillWrapper}>
+          {deurenbergVisible ? (
+            <BmiPill
+              heightCm={profile.height_cm}
+              weightKg={summary.latestKg!}
+              sex={resolvedSex}
+              dob={profile.dob}
+            />
+          ) : null}
+          <button
+            type="button"
+            className={styles.deurenbergToggle}
+            onClick={toggleDeurenberg}
+            aria-pressed={deurenbergVisible ? 'true' : 'false'}
+          >
+            {deurenbergVisible ? 'Hide body fat' : 'Show body fat'}
+          </button>
+        </div>
       ) : null}
 
       {hasData ? (
